@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/11 10:06:40 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:28:36 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,11 +159,12 @@ int	count_double_lenght(char *str)
 
 	i = 0;
 	lenght = 0;
-	if (str[i] == '"')
+	if (str[i] == '\'')
 		i++;
-	while (str[i] && str[i] != '"')
+	while (str[i] && str[i] != '\'')
 	{
-		lenght++;
+		if (str[i] != '"')
+			lenght++;
 		i++;
 	}
 	return (lenght);
@@ -232,7 +233,7 @@ int	count_single_length(char **str)
 	while (**str)
 	{
 		if (**str == '\'')
-			break;
+			break ;
 		counter++;
 		(*str)++;
 	}
@@ -262,7 +263,6 @@ void	store_in_q(char *str, t_lexer *lexer)
 	ft_bzero(lexer->q, ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->lenght_double, ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->lenght_single, ft_strlen(str) * sizeof(int));
-	
 	while (*tmp)
 	{
 		check_quotes_state(*tmp, &store);
@@ -283,9 +283,8 @@ void	store_in_q(char *str, t_lexer *lexer)
 		check_quotes_state(*str, &store);
 		// printf(" %d === %d " , store.state_double , store.state_single);
 		// exit(1);
-		if ((store.state_double == 1 || store.state_double == 0)
-			&& store.state_single == 0 && *(str + 1) && finde_edge_quote(*(str
-					+ 1)) != 1)
+		if (store.state_double == 1 && store.state_single == 0 && *(str + 1)
+			&& finde_edge_quote(*(str + 1)) != 1)
 		{
 			// printf("%s\n", str);
 			// exit(1);
@@ -332,7 +331,7 @@ int	size_normal_length(const char *s)
 	return (i);
 }
 
-void	get_last_normal(t_lexer *lexer , char *str)
+void	get_last_normal(t_lexer *lexer, char *str)
 {
 	// printf("%s\n" , str);
 	while (lexer)
@@ -496,7 +495,7 @@ void	store_three_ht(char *str, int *i, t_lexer **lexer)
 	insert_at_end(lexer, tmp, WORD, 1);
 	free(tmp);
 	// tmp = NULL;
-	get_last_normal(*lexer , str + s);
+	get_last_normal(*lexer, str + s);
 }
 
 void	store_three(char *str, int *i, t_lexer **lexer)

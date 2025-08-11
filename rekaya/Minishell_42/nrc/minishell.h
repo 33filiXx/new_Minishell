@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/11 09:56:41 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:20:48 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ typedef struct s_expand_var
 	char		*newstr;
 	char		*result;
 	char		*finale_r;
-	char		*res;
 	char		*str;	
 	int			i;
 	t_dollar	*dollar;
