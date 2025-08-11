@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/11 02:12:16 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/11 10:06:40 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,13 +334,14 @@ int	size_normal_length(const char *s)
 
 void	get_last_normal(t_lexer *lexer , char *str)
 {
-	printf("%s\n" , str);
+	// printf("%s\n" , str);
 	while (lexer)
 	{
 		if (lexer->next == NULL)
 		{
 			lexer->q[0] = 0;
 			lexer->lenght_normal = size_normal_length(str);
+			// printf("%d +++" , lexer->lenght_normal);
 		}
 		lexer = lexer->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/11 03:17:17 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/11 09:56:41 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void						ft_free_lexer_list(t_lexer *head);
 void						ft_free_command_list(t_command *head);
 char 						*heredoc_handle(t_redirection **redir, char **dof , char **envp , t_lexer **lexer);
 void 						heredoc_parent(t_redirection **redir, char **dof, char **envp, t_lexer **lexer);
-char						*cleanup_argv(char *str, t_lexer **lexer, t_expand_var *expand);
+char						*cleanup_argv(char **str, t_lexer **lexer, t_expand_var *expand);
 void						free_one_lexer(t_lexer *lexer);
 
 
