@@ -1,0 +1,29 @@
+handle egde case $' ...
+handle exit status
+4 handle heredoc
+
+today task handle all about expand;
+
+
+
+
+
+STILL in expand 
+{
+
+1- $> echo $"" = null
+echo $"HOME"  = HOME
+echo $""HOME
+
+handle
+
+
+
+echo "$PWD""PWD"
+
+}
+
+
+
+handle heredoc and executet
+if i have time handle some leaks
