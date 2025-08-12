@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exc_2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:56:05 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/07/29 18:42:09 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:35:14 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_command_error(char *cmd_name, char *error_msg)
 void	check_path_exists(t_command *cmd)
 {
 	if (!cmd->path || (ft_strcmp(cmd->argv[0], ".") == 0)
-		|| (ft_strcmp(cmd->argv[0], "\0") == 0))
+		|| (ft_strcmp(cmd->argv[0], "\0") == 0) || !cmd->argv[0])
 	{
 		print_command_error(cmd->argv[0], ": command not found\n");
 		exit(127);

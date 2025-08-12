@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:27:30 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/07/19 16:40:22 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:24:35 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,9 @@ int	export_builtin(t_env **env, char **args)
 	}
 	while (args[i])
 	{
-		if (ft_strnstr(args[i], "+=", ft_strlen(args[i])))
-			handle_plus_assignment(env, args[i], &ret);
+		if (my_strnstr(args[i], "+=", ft_strlen(args[i])))
+		{
+			handle_plus_assignment(env, args[i], &ret);}
 		else
 			handle_regular_assignment(env, args[i], &ret);
 		i++;

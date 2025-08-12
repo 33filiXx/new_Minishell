@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:58:56 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 13:07:52 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:51:22 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,6 +306,7 @@ void	store_into_next(t_lexer **lexer, t_lexer *to_delete)
 {
 	(*lexer)->quotes = to_delete->quotes;
 	(*lexer)->content = to_delete->content;
+	(*lexer)->just_one_case = 1;
 	(*lexer)->q = to_delete->q;
 	(*lexer)->lenght_q = to_delete->lenght_q;
 	(*lexer)->lenght_double = to_delete->lenght_double;
@@ -339,6 +340,7 @@ void	remove_node(t_expand_norm *norm, t_lexer **lexer, t_lexer *to_delete)
 	free_position(norm);
 	store_into_next(lexer, to_delete);
 	store_into_postion(norm, lexer);
+	
 }
 
 void	search_comapre(t_env *env, t_lexer **lexer)
@@ -366,7 +368,17 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 		else
 			set_null_and_join(expand);
 	}
-	(*lexer)->content = ft_strdup(expand->finale_r);
+	// expand->finale_r = NULL;
+	// printf("{%s}" , expand->finale_r);
+	// exit(1);
+	if((*lexer)->just_one_case == 1 && !ft_strcmp(expand->finale_r , "\0"))
+	{
+		(*lexer)->content = NULL;
+		printf("dkhal hna \n");
+	}
+	else
+		(*lexer)->content = ft_strdup(expand->finale_r);
+		
 }
 
 void	expand(t_env *env, t_lexer *lexer)

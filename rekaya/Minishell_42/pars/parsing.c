@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 14:47:07 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 15:46:24 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,25 +230,21 @@ void	update_str_to_single(char **str)
 	}
 }
 
-int	r_and_check_double(t_lexer *lexer,t_store_in_q_var *var, char **str,
+void	r_and_check_double(t_lexer *lexer, t_store_in_q_var *var, char **str,
 		t_store_helper store)
 {
-	// printf("%s\n" , *str);
 	if (store.state_double == 1)
 	{
-		// printf("double {%s}\n", *str);
 		lexer->lenght_double[var->j++] = count_double_lenght(*str);
 		lexer->q[var->i++] = 1;
 		update_str_to_double(str);
 	}
 	else if (store.state_double == 0)
 	{
-		// printf("egde [{%s}]\n", *str);
 		lexer->lenght_edge[var->k++] = count_egde_lenght(*str);
 		lexer->q[var->i++] = 2;
 		update_edge_inside(str);
 	}
-	return (0);
 }
 int	count_single_length(char **str)
 {
@@ -266,7 +262,7 @@ int	count_single_length(char **str)
 		(*str)--;
 	return (counter);
 }
-int free_and_store_in_q(char *str, t_lexer *lexer)
+int	free_and_store_in_q(char *str, t_lexer *lexer)
 {
 	free(lexer->q);
 	free(lexer->lenght_double);
@@ -274,22 +270,23 @@ int free_and_store_in_q(char *str, t_lexer *lexer)
 	free(lexer->lenght_edge);
 	lexer->q = malloc(ft_strlen(str) * sizeof(int));
 	lexer->lenght_double = malloc(ft_strlen(str) * sizeof(int));
-	if(!lexer->lenght_double)
-		return 1;
+	if (!lexer->lenght_double)
+		return (1);
 	lexer->lenght_single = malloc(ft_strlen(str) * sizeof(int));
-	if(!lexer->lenght_single)
-		return 1;
+	if (!lexer->lenght_single)
+		return (1);
 	lexer->lenght_edge = malloc(ft_strlen(str) * sizeof(int));
-	if(!lexer->lenght_edge)
-		return 1;
+	if (!lexer->lenght_edge)
+		return (1);
 	ft_bzero(lexer->q, ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->lenght_double, ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->lenght_single, ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->lenght_edge, ft_strlen(str) * sizeof(int));
-	return 0;
+	return (0);
 }
 
-void store_in_lexer_single(char *tmp , t_store_helper store , t_lexer *lexer , t_store_in_q_var var)
+void	store_in_lexer_single(char *tmp, t_store_helper store, t_lexer *lexer,
+		t_store_in_q_var *var)
 {
 	while (*tmp)
 	{
@@ -297,7 +294,7 @@ void store_in_lexer_single(char *tmp , t_store_helper store , t_lexer *lexer , t
 		if (store.state_single == 1 && store.state_double == 0)
 		{
 			tmp++;
-			lexer->lenght_single[var.p++] = count_single_length(&tmp);
+			lexer->lenght_single[var->p++] = count_single_length(&tmp);
 			if (!*tmp)
 				break ;
 		}
@@ -305,37 +302,47 @@ void store_in_lexer_single(char *tmp , t_store_helper store , t_lexer *lexer , t
 	}
 }
 
-void reset_q_var(t_store_in_q_var *var)
+void	reset_q_var(t_store_in_q_var *var)
 {
-	var->i = 0 ;
-	var->j = 0 ;
-	var->i = 0 ;
-	var->p = 0 ;
+	var->i = 0;
+	var->j = 0;
+	var->i = 0;
+	var->p = 0;
+}
+
+int	handle_quotes_single(t_lexer *lexer, char **str, t_store_helper *store,
+		t_store_in_q_var *var)
+{
+	lexer->q[var->i++] = 22;
+	update_str_to_single(str);
+	if (!*str)
+		return (1);
+	check_quotes_state(**str, store);
+	return (0);
+}
+
+int	recall(t_store_helper *store, char *str ,t_store_in_q_var *var , t_lexer *lexer)
+{
+	reset_q_var(var);
+	reset_data(store);
+	if (free_and_store_in_q(str, lexer))
+		exit(1);
+	return (0);
 }
 
 void	store_in_q(char *str, t_lexer *lexer)
 {
-	t_store_helper	store;
-	t_store_in_q_var var;
-
-	reset_q_var(&var);
-	// int				i;
-	// int				j;
-	// int				p;
-	// int				k;
-	char			*tmp;
+	t_store_helper		store;
+	t_store_in_q_var	var;
+	char				*tmp;
 
 	tmp = str;
-	reset_data(&store);
-	// i = 0;
-	// j = 0;
-	// p = 0;
-	// k = 0;
-	
-	if(free_and_store_in_q(str , lexer))
-		return;
-	store_in_lexer_single(tmp , store , lexer , var);
-	tmp = str;
+	recall(&store , str , &var , lexer);
+	// reset_q_var(&var);
+	// reset_data(&store);
+	// if (free_and_store_in_q(str, lexer))
+	// 	return ;
+	store_in_lexer_single(tmp, store, lexer, &var);
 	reset_data(&store);
 	while (*str)
 	{
@@ -343,20 +350,14 @@ void	store_in_q(char *str, t_lexer *lexer)
 		if ((store.state_double == 1 || store.state_double == 0)
 			&& store.state_single == 0)
 		{
-			if (r_and_check_double(lexer, &var, &str, store))
-				return ;
+			r_and_check_double(lexer, &var, &str, store);
 			if (!*str)
 				break ;
 			check_quotes_state(*str, &store);
 		}
 		else if (store.state_single == 1 && store.state_double == 0)
-		{
-			lexer->q[var.i++] = 22;
-			update_str_to_single(&str);
-			if (!*str)
+			if (handle_quotes_single(lexer, &str, &store, &var))
 				break ;
-			check_quotes_state(*str, &store);
-		}
 		str++;
 	}
 	lexer->lenght_q = var.i;

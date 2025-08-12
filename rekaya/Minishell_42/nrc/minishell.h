@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 14:37:06 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:39:44 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_lexer
 	int						*lenght_single;
 	int						*lenght_edge;
 	int						lenght_normal;
+	int						just_one_case;
 	struct s_lexer			*next;
 }							t_lexer;
 
@@ -193,6 +194,7 @@ int		is_valid_identifier(char *s);
 int		exit_builtin(char **argv, int abi);
 void	print_env_export(t_env *env);
 void	unset_env(t_env **env, const char *key);
+char	*my_strnstr(const char *haystack, const char *needle, size_t len);
 	
 //env_handel
 t_env	*env_node_new(const char *key, const char *value);
