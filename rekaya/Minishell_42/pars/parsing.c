@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 06:47:59 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 08:05:20 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,8 +228,6 @@ void	update_str_to_single(char **str)
 			break ;
 		(*str)++;
 	}
-	if (**str == '\'')
-		(*str)--;
 }
 
 int	r_and_check_double(t_lexer *lexer, int *j, char **str, int *i,
@@ -333,6 +331,7 @@ void	store_in_q(char *str, t_lexer *lexer)
 			update_str_to_single(&str);
 			if (!*str)
 				break ;
+			check_quotes_state(*tmp, &store);
 		}
 		str++;
 	}

@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:58:56 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 06:19:49 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 08:56:51 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,12 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 	{
 		if (**p == '$')
 		{
+			if (**p == '$' && expand->lenght == stop - 1)
+			{
+				expand->result = ft_strjoin(expand->result, "$");
+				(*p)++;
+				break ;
+			}
 			while (**p == '$' && *(*p + 1) && *(*p + 1) == '?')
 			{
 				(*p) += 2;
@@ -223,9 +229,10 @@ void	expand_logic_sigle(t_expand_var *expand, t_lexer *lexer, char **p)
 	int		stop;
 	char	one[2];
 
+	stop = *lexer->lenght_single;
+	// printf("single %d\n", *lexer->lenght_single);
 	while (**p)
 	{
-		stop = *lexer->lenght_single;
 		one[0] = **p;
 		one[1] = '\0';
 		expand->str = ft_strjoin(expand->result, one);
@@ -277,7 +284,7 @@ void	free_position(int *pos_one, int *pos_two, int *pos_three, int *d)
 	free(pos_three);
 	free(d);
 }
-void	store_into_next(t_lexer **lexer , t_lexer  *to_delete)
+void	store_into_next(t_lexer **lexer, t_lexer *to_delete)
 {
 	(*lexer)->quotes = to_delete->quotes;
 	(*lexer)->content = to_delete->content;
@@ -285,7 +292,23 @@ void	store_into_next(t_lexer **lexer , t_lexer  *to_delete)
 	(*lexer)->lenght_q = to_delete->lenght_q;
 	(*lexer)->lenght_double = to_delete->lenght_double;
 }
-
+void	store_into_postion(int *position_one, int *position_two,
+		int *position_three, t_lexer **lexer)
+{
+	position_one = (*lexer)->lenght_double;
+	position_two = (*lexer)->lenght_edge;
+	position_three = (*lexer)->lenght_single;
+}
+void	search_helper(t_expand_var *expand , t_lexer **lexer , t_lexer *to_delete , char **p)
+{
+	(*lexer)->next = to_delete->next;
+	free(to_delete);
+	*p = (*lexer)->content;
+	// free(expand->newstr);
+	// free(expand->finale_r);
+	// free(expand);
+	reset_info_expand(expand);
+}
 void	search_comapre(t_env *env, t_lexer **lexer)
 {
 	char			*p;
@@ -309,19 +332,24 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 		handle_double_single(env, lexer, expand, &p);
 		if (!expand->result && (*lexer)->next)
 		{
+			to_delete = (*lexer)->next;
 			free_position(position_one, position_two, position_three, d);
-			free((*lexer)->content);
-			store_into_next(lexer , to_delete);
-			position_one = (*lexer)->lenght_double;
-			position_two = (*lexer)->lenght_edge;
-			position_three = (*lexer)->lenght_single;
+			store_into_next(lexer, to_delete);
+			// free((*lexer)->content);
+			store_into_postion(position_one, position_two, position_three,
+				lexer);
+			// position_one = (*lexer)->lenght_double;
+			// position_two = (*lexer)->lenght_edge;
+			// position_three = (*lexer)->lenght_single;
 			d = (*lexer)->q;
-			(*lexer)->next = to_delete->next;
-			free(to_delete);
-			p = (*lexer)->content;
-			// free(expand->newstr);
-			// free(expand->finale_r);
-			reset_info_expand(expand);
+			// (*lexer)->next = to_delete->next;
+			// free(to_delete);
+			// p = (*lexer)->content;
+			// // free(expand->newstr);
+			// // free(expand->finale_r);
+			// reset_info_expand(expand);
+			search_helper(expand , lexer ,to_delete , &p);
+			// continue;
 		}
 		else
 			set_null_and_join(expand);

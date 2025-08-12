@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:09:58 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 05:25:51 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 08:25:11 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,7 +298,8 @@ void	redir_creation(t_redirection *redir, t_command *command,
 	else
 		track_redir(redir, lexer);
 	add_and_move(command, redir, lexer);
-	free_split(docs);
+	if(!docs)
+		free_split(docs);
 }
 
 int	store_in_redirect(t_lexer **lexer, t_command *command, char **envp)
