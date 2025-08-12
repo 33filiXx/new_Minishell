@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:33 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/11 02:09:35 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/11 20:07:13 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ t_lexer	*creat_node(char *content, e_tokens token, t_quotes quotes)
 		free_one_lexer(new_node);
 		return (NULL);
 	}
+	new_node->lenght_edge = ft_calloc(sizeof(int), 1);
+	if (!new_node->lenght_edge)
+	{
+		free_one_lexer(new_node);
+		return (NULL);
+	}
 	new_node->token = token;
 	new_node->quotes = quotes;
    	new_node->q[0] = 1;
@@ -49,6 +55,7 @@ t_lexer	*creat_node(char *content, e_tokens token, t_quotes quotes)
 	new_node->lenght_q = 0;
    	new_node->lenght_double[0] = 0;
 	new_node->lenght_single[0] = 0;
+	new_node->lenght_edge[0] = 0;
 	new_node->lenght_normal = 0;
     // new_node->lenght_double[1] = 0;
 	new_node->content = ft_strdup(content);

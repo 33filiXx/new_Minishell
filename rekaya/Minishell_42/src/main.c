@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 22:00:19 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/11 17:31:38 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 04:11:48 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void print_nodee (t_lexer *head)
         printf("lenght_single : %d\n", head->lenght_single[i]); 
         i++;
     }
-        printf("%s: ->>>>>>>>>>>>> %u ->>>>>>>>>>>>>>>>>>>>>>> %u -------->%d--->%d :\n" ,  head->content ,head->token , head->quotes ,  head->lenght_double[0] , head->lenght_normal);
+        printf("\n%s: ---------------nor-%d ---------%d-----------, %d -----------------edge=%d:\n" ,  head->content , head->lenght_normal ,head->lenght_double[0] , head->lenght_normal , head->lenght_edge[0]);
         head = head->next;
     }
 }
@@ -154,7 +154,7 @@ int main(int argc, char *argv[], char **envp)
             if (command->pipe_in || command->pipe_out)
                 execute_pipeline(command, env);
             else
-                init_exc(command, &env);
+                init_exc(command, &env);   
             ft_free_command_list(command);
             command = NULL;
         }

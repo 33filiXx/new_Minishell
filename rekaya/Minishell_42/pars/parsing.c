@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/11 17:28:36 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 04:12:35 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,29 +159,56 @@ int	count_double_lenght(char *str)
 
 	i = 0;
 	lenght = 0;
-	if (str[i] == '\'')
+	if (str[i] == '"')
 		i++;
-	while (str[i] && str[i] != '\'')
+	while (str[i])
 	{
-		if (str[i] != '"')
-			lenght++;
+		if (str[i] == '"')
+			break ;
+		lenght++;
 		i++;
 	}
+	// if (lenght == 2)
+	// 	lenght--;
 	return (lenght);
 }
-int	count_double_lenghtt(t_lexer *lexer)
+int	count_egde_lenght(char *str)
 {
 	int	i;
+	int	lenght;
 
-	i = 1;
-	while (lexer)
-	{
+	i = 0;
+	lenght = 0;
+	if (str[i] == '\"' || str[i] == '\'')
 		i++;
-		lexer = lexer->next;
+	while (str[i])
+	{
+		lenght++;
+		i++;
+		if (str[i] == '"' || str[i] == '\'')
+			break ;
 	}
-	return (i);
+	// if (lenght == 2)
+	// 	lenght--;
+	// printf("%d" , lenght);
+	// exit(1);
+	return (lenght);
 }
+
 void	update_str_to_double(char **str)
+{
+	if (**str == '\"')
+		(*str)++;
+	while (**str)
+	{
+		if (**str == '"')
+			break ;
+		(*str)++;
+	}
+	if (**str == '"')
+		(*str)--;
+}
+void	update_edge_inside(char **str)
 {
 	if (**str == '\"' || **str == '\'')
 		(*str)++;
@@ -197,32 +224,36 @@ void	update_str_to_double(char **str)
 
 void	update_str_to_single(char **str)
 {
-	if (**str == '\'' || **str == '"')
+	if (**str == '\'')
 		(*str)++;
 	while (**str)
 	{
-		if (**str == '\'' || **str == '"')
+		if (**str == '\'')
 			break ;
 		(*str)++;
 	}
-	if (**str == '\'' || **str == '"')
+	if (**str == '\'')
 		(*str)--;
 }
 
-int	r_and_check_double(t_lexer *lexer, int *j, char *str, int *i)
+int	r_and_check_double(t_lexer *lexer, int *j, char **str, int *i,
+		t_store_helper store, int *k)
 {
 	// printf("%s\n" , str);
-	lexer->lenght_double[(*j)++] = count_double_lenght(str);
-	// exit(1);
-	if (!lexer->lenght_double)
+	if (store.state_double == 1)
 	{
-		free(lexer->q);
-		lexer->q = NULL;
-		free(lexer->lenght_double);
-		free(lexer);
-		return (1);
+		// printf("double {%s}\n", *str);
+		lexer->lenght_double[(*j)++] = count_double_lenght(*str);
+		lexer->q[(*i)++] = 1;
+		update_str_to_double(str);
 	}
-	lexer->q[(*i)++] = 1;
+	else if (store.state_double == 0 )
+	{
+		// printf("egde [{%s}]\n", *str);
+		lexer->lenght_edge[(*k)++] = count_egde_lenght(*str);
+		lexer->q[(*i)++] = 2;
+		update_edge_inside(str);
+	}
 	return (0);
 }
 int	count_single_length(char **str)
@@ -247,6 +278,7 @@ void	store_in_q(char *str, t_lexer *lexer)
 	int				i;
 	int				j;
 	int				p;
+	int				k;
 	char			*tmp;
 
 	tmp = str;
@@ -254,15 +286,19 @@ void	store_in_q(char *str, t_lexer *lexer)
 	i = 0;
 	j = 0;
 	p = 0;
+	k = 0;
 	free(lexer->q);
 	free(lexer->lenght_double);
 	free(lexer->lenght_single);
+	free(lexer->lenght_edge);
 	lexer->q = malloc(ft_strlen(str) * sizeof(int));
 	lexer->lenght_double = malloc(ft_strlen(str) * sizeof(int));
 	lexer->lenght_single = malloc(ft_strlen(str) * sizeof(int));
+	lexer->lenght_edge = malloc(ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->q, ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->lenght_double, ft_strlen(str) * sizeof(int));
 	ft_bzero(lexer->lenght_single, ft_strlen(str) * sizeof(int));
+	ft_bzero(lexer->lenght_edge, ft_strlen(str) * sizeof(int));
 	while (*tmp)
 	{
 		check_quotes_state(*tmp, &store);
@@ -283,20 +319,18 @@ void	store_in_q(char *str, t_lexer *lexer)
 		check_quotes_state(*str, &store);
 		// printf(" %d === %d " , store.state_double , store.state_single);
 		// exit(1);
-		if (store.state_double == 1 && store.state_single == 0 && *(str + 1)
-			&& finde_edge_quote(*(str + 1)) != 1)
+		if ((store.state_double == 1 || store.state_double == 0)
+			 && store.state_single == 0)
 		{
 			// printf("%s\n", str);
 			// exit(1);
-			if (r_and_check_double(lexer, &j, str, &i))
+			if (r_and_check_double(lexer, &j, &str, &i, store, &k))
 				return ;
-			update_str_to_double(&str);
 			// printf("\n");
 			if (!*str)
 				break ;
 		}
-		else if (store.state_single == 1 && store.state_double == 0 && *(str
-				+ 1) && finde_edge_quote(*(str + 1)) != 1)
+		else if (store.state_single == 1 && store.state_double == 0)
 		{
 			lexer->q[i++] = 22;
 			update_str_to_single(&str);

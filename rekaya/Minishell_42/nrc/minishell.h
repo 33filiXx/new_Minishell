@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/11 16:20:48 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/11 20:05:56 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_lexer
 	int						lenght_q;
 	int						*lenght_double;
 	int						*lenght_single;
+	int						*lenght_edge;
 	int						lenght_normal;
 	struct s_lexer			*next;
 }							t_lexer;

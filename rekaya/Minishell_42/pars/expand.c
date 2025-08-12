@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:58:56 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/11 17:55:10 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 04:15:24 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,8 @@ void	reset_somme_info_expand(t_expand_var *expand)
 	expand->check = 0;
 	expand->edge = 0;
 	expand->newstr = NULL;
-	expand->str = NULL;
 	expand->result = NULL;
-	expand->i = 0;
+	expand->str = NULL;
 	expand->lenght = 0;
 	// expand->dollar = malloc(sizeof(t_dollar));
 	// if (expand->dollar)
@@ -76,11 +75,16 @@ int	check_edge_cases(char **newstr, char **str, t_expand_var *expand,
 	int		i;
 	int		stop;
 
-	tmp = malloc(ft_strlen(*str) * sizeof(char *));
+	tmp = malloc(ft_strlen(*str) + 1);
 	if (!tmp)
 		return (0);
 	i = 0;
-	stop = (*lexer)->lenght_normal;
+	if ((*lexer)->q[expand->i] == 0)
+		stop = (*lexer)->lenght_normal;
+	else if ((*lexer)->q[expand->i] == 1)
+		stop = *((*lexer)->lenght_double);
+	else if ((*lexer)->q[expand->i] == 2)
+		stop = *((*lexer)->lenght_edge);
 	if (**str == '$' && *(*str + 1) && ft_isalpha(*(*str + 1)) != 1 && *(*str
 			+ 1) != '?')
 	{
@@ -89,6 +93,7 @@ int	check_edge_cases(char **newstr, char **str, t_expand_var *expand,
 		{
 			if (**str == '$' && *(*str + 1) && ft_isalpha(*(*str + 1)))
 			{
+				// printf("dkhal hna\n");
 				break ;
 			}
 			if (*(*str) == '$' && !*(*str + 1))
@@ -120,8 +125,7 @@ char	*cleanup_argv(char **str, t_lexer **lexer, t_expand_var *expand)
 	char	*newstr;
 
 	newstr = NULL;
-	if (**str == '$' && *(*str + 1) && *(*str + 1) != '?'
-		&& (*lexer)->q[expand->i] != 22)
+	if (**str == '$' && *(*str + 1) && *(*str + 1) != '?')
 	{
 		a = check_edge_cases(&newstr, str, expand, lexer);
 		if (a == 1)
@@ -146,34 +150,39 @@ void	store_equal_env(t_expand_var *expand, char **str, t_lexer *lexer,
 	int		i;
 
 	// printf("debage debage\n");
-	// printf("STR : %s\n", *str);
 	stop = 0;
 	i = 0;
 	to_cmp = malloc(ft_strlen(*str) + 1);
-	if (*lexer->q == 0)
+	if (lexer->q[expand->i] == 0)
 		stop = lexer->lenght_normal;
+	else if (lexer->q[expand->i] == 1)
+		stop = *lexer->lenght_double;
+	else if (lexer->q[expand->i] == 2)
+		stop = *lexer->lenght_edge;
 	tmp_env = env;
 	// expand->lenght++;
 	// (*str)++;
-	if (*(*str + 1) && ft_isalpha(*(*str + 1)))
+	if (*(*str + 1) && ft_isalpha(*(*str + 1)) )
 	{
+		// printf("STR : %s\n", *str);
+		// printf("lenght : %d\n", stop);
 		while (*str)
 		{
 			to_cmp[i++] = **str;
 			(*str)++;
-			if (!ft_isalpha(*(*str)) && expand->lenght < stop)
-				break ;
 			expand->lenght++;
+			if (!ft_isalpha(*(*str)) || expand->lenght == stop)
+				break ;
 		}
 		to_cmp[i] = '\0';
 	}
+	// expand->lenght--;
 	// printf("tmp_vstr :  %s\n" , to_cmp);
 	// printf("STR : %s\n", *str);
 	// exit(1);
 	while (tmp_env)
 	{
-		if (tmp_env->value && ft_strcmp(to_cmp + 1, tmp_env->key) == 0
-			/*&& expand->check == on */)
+		if (tmp_env->value && ft_strcmp(to_cmp + 1, tmp_env->key) == 0)
 		{
 			expand->result = ft_strjoin(expand->result, tmp_env->value);
 			free(to_cmp);
@@ -189,12 +198,26 @@ void	store_equal_env(t_expand_var *expand, char **str, t_lexer *lexer,
 void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 		t_env *env)
 {
+	int		stop;
 	char	one[2];
 
+	stop = 0;
+	// printf("%d\n",(*lexer)->q[expand->i]);
+	if ((*lexer)->q[expand->i] == 0)
+		stop = (*lexer)->lenght_normal;
+	else if ((*lexer)->q[expand->i] == 1)
+		stop = *((*lexer)->lenght_double);
+	else if ((*lexer)->q[expand->i] == 2)
+		stop = *((*lexer)->lenght_edge);
+	// printf("%d\n" , stop);
+	// printf("%s\n" , *p);
 	while (**p)
 	{
 		if (**p == '$')
 		{
+			// printf("dkhllll\n");
+			// printf("stop %d\n" , stop);
+			// printf("lenght %d\n" , expand->lenght);
 			while (**p == '$' && *(*p + 1) && *(*p + 1) == '?')
 			{
 				(*p) += 2;
@@ -216,18 +239,20 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 		}
 		else
 		{
+			// printf("what : %d\n", expand->lenght);
 			one[0] = **p;
 			one[1] = '\0';
 			expand->str = ft_strjoin(expand->result, one);
 			expand->result = expand->str;
 			(*p)++;
-			expand->lenght++;
+			expand->lenght += 1;
 		}
-		if (expand->lenght == (*lexer)->lenght_normal)
+		if (expand->lenght == stop)
 			break ;
 	}
-	printf("RESULT : %s\n", expand->result);
-	exit(1);
+	// printf("STR : %s\n", *p);
+	// printf("RESULT : %s\n", expand->result);
+	// exit(1);
 }
 
 void	search_comapre(t_env *env, t_lexer **lexer)
@@ -244,14 +269,36 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 		if ((*lexer)->q[expand->i] == 0)
 		{
 			expand_logic_handler(expand, lexer, &p, env);
-			expand->i++;
-			reset_somme_info_expand(expand);
+			// expand->i++;
+			// reset_somme_info_expand(expand);
 		}
-		//if ((*lexer)->q[expand->i] == 1)
-		//{
-		//	expand_logic_handler(expand, lexer, &p, env);
-		//}
+		else if ((*lexer)->q[expand->i] == 1)
+		{
+			// printf("%d\n", *((*lexer)->lenght_double));
+			// printf(" double %s\n", p);
+			expand_logic_handler(expand, lexer, &p, env);
+			expand->i++;
+			((*lexer)->lenght_double)++;
+			// printf("%d\n", *((*lexer)->lenght_double));
+		}
+		else if ((*lexer)->q[expand->i] == 2)
+		{
+			// printf(" single %s\n", p);
+			// reset_somme_info_expand(expand);
+			expand_logic_handler(expand, lexer, &p, env);
+			((*lexer)->lenght_edge)++;
+			expand->i++;
+		}
+		expand->finale_r = ft_strjoin(expand->finale_r, expand->result);
+		// reset_somme_info_expand(expand);
+		expand->result = NULL;
+		expand->newstr = NULL;
+		expand->lenght = 0;
+		// expand->i++;
+		// p++;
 	}
+	printf(" %s\n", expand->finale_r);
+	exit(1);
 }
 
 void	expand(t_env *env, t_lexer *lexer)
