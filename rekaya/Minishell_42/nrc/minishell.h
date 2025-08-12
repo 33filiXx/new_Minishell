@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 09:48:03 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:37:06 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,15 @@ typedef struct s_expand_norm
 	int				*position_two;
 	int				*position_three;
 	int				*d;
-}							t_expand_norm;	
+}							t_expand_norm;
+
+typedef struct s_store_in_q_var
+{
+	int				i;
+	int				j;
+	int				p;
+	int				k;
+}							t_store_in_q_var;	
 
 typedef struct s_expand_var
 {

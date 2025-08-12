@@ -27,3 +27,7 @@ echo "$PWD""PWD"
 
 handle heredoc and executet
 if i have time handle some leaks
+
+
+minishell$ export apah=+=
+export: `apah=+=`: not a valid identifier
