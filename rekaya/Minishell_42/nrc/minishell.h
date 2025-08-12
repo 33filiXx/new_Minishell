@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/11 20:05:56 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 06:11:31 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,7 @@ typedef struct s_store_helper
 	int						last_quotes;
 	int						check;
 }							t_store_helper;
-typedef struct s_rebuild_var
-{
-	int		lenght_two;
-	char	*result;
-	int j;
-	int p;
-	int check ;
-	int lenght_one;
-}							t_rebuild_var;
+
 
 typedef struct s_expand_var
 {

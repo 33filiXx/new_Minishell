@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:09:58 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/09 22:11:33 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 05:25:51 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	free_one_lexer(t_lexer *lexer)
 {
 	if (!lexer)
 		return ;
-	free(lexer->lenght_double);
+	// free(lexer->lenght_double);
 	free(lexer->content);
 	free(lexer->q);
 	free(lexer);
