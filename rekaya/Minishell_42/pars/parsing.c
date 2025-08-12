@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 05:49:30 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 06:47:59 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,8 +205,6 @@ void	update_str_to_double(char **str)
 			break ;
 		(*str)++;
 	}
-	if (**str == '"')
-		(*str)--;
 }
 void	update_edge_inside(char **str)
 {
@@ -218,8 +216,6 @@ void	update_edge_inside(char **str)
 			break ;
 		(*str)++;
 	}
-	if (**str == '"' || **str == '\'')
-		(*str)--;
 }
 
 void	update_str_to_single(char **str)
@@ -240,14 +236,14 @@ int	r_and_check_double(t_lexer *lexer, int *j, char **str, int *i,
 		t_store_helper store, int *k)
 {
 	// printf("%s\n" , str);
-	if (store.state_double == 1)
+	if (store.state_double == 1 && **str != '\'')
 	{
 		// printf("double {%s}\n", *str);
 		lexer->lenght_double[(*j)++] = count_double_lenght(*str);
 		lexer->q[(*i)++] = 1;
 		update_str_to_double(str);
 	}
-	else if (store.state_double == 0 )
+	else if (store.state_double == 0 && **str != '\'')
 	{
 		// printf("egde [{%s}]\n", *str);
 		lexer->lenght_edge[(*k)++] = count_egde_lenght(*str);
@@ -329,6 +325,7 @@ void	store_in_q(char *str, t_lexer *lexer)
 			// printf("\n");
 			if (!*str)
 				break ;
+			check_quotes_state(*tmp, &store);
 		}
 		else if (store.state_single == 1 && store.state_double == 0)
 		{

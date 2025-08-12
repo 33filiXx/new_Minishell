@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:58:56 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 06:13:40 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 06:19:49 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ void	handle_double_single(t_env *env, t_lexer **lexer, t_expand_var *expand,
 		expand->i++;
 	}
 }
-void	set_null_and_join(t_lexer **lexer, t_expand_var *expand)
+void	set_null_and_join(t_expand_var *expand)
 {
 	expand->finale_r = ft_strjoin(expand->finale_r, expand->result);
 	expand->result = NULL;
@@ -277,6 +277,14 @@ void	free_position(int *pos_one, int *pos_two, int *pos_three, int *d)
 	free(pos_three);
 	free(d);
 }
+void	store_into_next(t_lexer **lexer , t_lexer  *to_delete)
+{
+	(*lexer)->quotes = to_delete->quotes;
+	(*lexer)->content = to_delete->content;
+	(*lexer)->q = to_delete->q;
+	(*lexer)->lenght_q = to_delete->lenght_q;
+	(*lexer)->lenght_double = to_delete->lenght_double;
+}
 
 void	search_comapre(t_env *env, t_lexer **lexer)
 {
@@ -288,11 +296,11 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 	int				*position_three;
 	int				*d;
 
+	to_delete = malloc(sizeof(to_delete));
 	position_one = (*lexer)->lenght_double;
 	position_two = (*lexer)->lenght_edge;
 	position_three = (*lexer)->lenght_single;
 	d = (*lexer)->q;
-	(void)env;
 	expand = malloc(sizeof(t_expand_var));
 	reset_info_expand(expand);
 	p = (*lexer)->content;
@@ -301,17 +309,9 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 		handle_double_single(env, lexer, expand, &p);
 		if (!expand->result && (*lexer)->next)
 		{
-			to_delete = (*lexer)->next;
-			free(position_one);
-			free(position_two);
-			free(position_three);
-			free(d);
+			free_position(position_one, position_two, position_three, d);
 			free((*lexer)->content);
-			(*lexer)->quotes = to_delete->quotes;
-			(*lexer)->content = to_delete->content;
-			(*lexer)->q = to_delete->q;
-			(*lexer)->lenght_q = to_delete->lenght_q;
-			(*lexer)->lenght_double = to_delete->lenght_double;
+			store_into_next(lexer , to_delete);
 			position_one = (*lexer)->lenght_double;
 			position_two = (*lexer)->lenght_edge;
 			position_three = (*lexer)->lenght_single;
@@ -324,7 +324,7 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 			reset_info_expand(expand);
 		}
 		else
-			set_null_and_join(lexer, expand);
+			set_null_and_join(expand);
 	}
 	(*lexer)->content = ft_strdup(expand->finale_r);
 }
