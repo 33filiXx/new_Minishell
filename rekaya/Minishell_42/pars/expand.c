@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:58:56 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 08:56:51 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:23:10 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,45 @@ void	store_equal_env(t_expand_var *expand, char **str, t_lexer *lexer,
 		tmp_env = tmp_env->next;
 	}
 }
+void	store_int_logic_var(t_expand_var *expand, t_lexer **lexer, int *stop)
+{
+	if ((*lexer)->q[expand->i] == 0)
+		*stop = (*lexer)->lenght_normal;
+	else if ((*lexer)->q[expand->i] == 1)
+		*stop = *((*lexer)->lenght_double);
+	else if ((*lexer)->q[expand->i] == 2)
+		*stop = *((*lexer)->lenght_edge);
+}
+
+int	check_edge_one(t_expand_var *expand, int stop, char **p)
+{
+	if (**p == '$' && expand->lenght == stop - 1)
+	{
+		expand->result = ft_strjoin(expand->result, "$");
+		(*p)++;
+		return (1);
+	}
+	return (0);
+}
+void	handle_exit_status(t_expand_var *expand, char **p)
+{
+	while (**p == '$' && *(*p + 1) && *(*p + 1) == '?')
+	{
+		(*p) += 2;
+		expand->lenght += 2;
+		expand->result = ft_strjoin(expand->result, ft_itoa((*exit_stat())));
+	}
+}
+
+void	handle_without_dollar(t_expand_var *expand , char *one , char **p)
+{
+	one[0] = **p;
+	one[1] = '\0';
+	expand->str = ft_strjoin(expand->result, one);
+	expand->result = expand->str;
+	(*p)++;
+	expand->lenght += 1;
+}
 
 void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 		t_env *env)
@@ -176,61 +215,66 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 	char	one[2];
 
 	stop = 0;
-	if ((*lexer)->q[expand->i] == 0)
-		stop = (*lexer)->lenght_normal;
-	else if ((*lexer)->q[expand->i] == 1)
-		stop = *((*lexer)->lenght_double);
-	else if ((*lexer)->q[expand->i] == 2)
-		stop = *((*lexer)->lenght_edge);
+	// if ((*lexer)->q[expand->i] == 0)
+	// 	stop = (*lexer)->lenght_normal;
+	// else if ((*lexer)->q[expand->i] == 1)
+	// 	stop = *((*lexer)->lenght_double);
+	// else if ((*lexer)->q[expand->i] == 2)
+	// 	stop = *((*lexer)->lenght_edge);
+	store_int_logic_var(expand, lexer, &stop);
 	while (**p)
 	{
 		if (**p == '$')
 		{
-			if (**p == '$' && expand->lenght == stop - 1)
-			{
-				expand->result = ft_strjoin(expand->result, "$");
-				(*p)++;
+			// if (**p == '$' && expand->lenght == stop - 1)
+			// {
+			// 	expand->result = ft_strjoin(expand->result, "$");
+			// 	(*p)++;
+			// 	break ;
+			// }
+			handle_exit_status(expand, p);
+			if (check_edge_one(expand, stop, p))
 				break ;
-			}
-			while (**p == '$' && *(*p + 1) && *(*p + 1) == '?')
-			{
-				(*p) += 2;
-				expand->lenght += 2;
-				expand->result = ft_strjoin(expand->result,
-						ft_itoa((*exit_stat())));
-			}
+			// while (**p == '$' && *(*p + 1) && *(*p + 1) == '?')
+			// {
+			// 	(*p) += 2;
+			// 	expand->lenght += 2;
+			// 	expand->result = ft_strjoin(expand->result,
+			// 			ft_itoa((*exit_stat())));
+			// }
 			expand->newstr = cleanup_argv(p, lexer, expand);
 			if (expand->edge == 1)
 				expand->result = ft_strjoin(expand->result, expand->newstr);
 			if (**p == '$')
 				store_equal_env(expand, p, *lexer, env);
-			if (!ft_strcmp("$", *p))
-			{
-				expand->result = ft_strjoin(expand->result, *p);
-				(*p)++;
-				expand->lenght++;
-			}
+			// if (!ft_strcmp("$", *p))
+			// {
+			// 	expand->result = ft_strjoin(expand->result, *p);
+			// 	(*p)++;
+			// 	expand->lenght++;
+			// }
 		}
 		else
 		{
-			one[0] = **p;
-			one[1] = '\0';
-			expand->str = ft_strjoin(expand->result, one);
-			expand->result = expand->str;
-			(*p)++;
-			expand->lenght += 1;
+			// one[0] = **p;
+			// one[1] = '\0';
+			// expand->str = ft_strjoin(expand->result, one);
+			// expand->result = expand->str;
+			// (*p)++;
+			// expand->lenght += 1;
+			handle_without_dollar(expand , one , p);
 		}
 		if (expand->lenght == stop)
 			break ;
 	}
 }
+
 void	expand_logic_sigle(t_expand_var *expand, t_lexer *lexer, char **p)
 {
 	int		stop;
 	char	one[2];
 
 	stop = *lexer->lenght_single;
-	// printf("single %d\n", *lexer->lenght_single);
 	while (**p)
 	{
 		one[0] = **p;
@@ -277,12 +321,12 @@ void	set_null_and_join(t_expand_var *expand)
 	expand->lenght = 0;
 }
 
-void	free_position(int *pos_one, int *pos_two, int *pos_three, int *d)
+void	free_position(t_expand_norm *norm)
 {
-	free(pos_one);
-	free(pos_two);
-	free(pos_three);
-	free(d);
+	free(norm->position_one);
+	free(norm->position_two);
+	free(norm->position_three);
+	free(norm->d);
 }
 void	store_into_next(t_lexer **lexer, t_lexer *to_delete)
 {
@@ -292,38 +336,47 @@ void	store_into_next(t_lexer **lexer, t_lexer *to_delete)
 	(*lexer)->lenght_q = to_delete->lenght_q;
 	(*lexer)->lenght_double = to_delete->lenght_double;
 }
-void	store_into_postion(int *position_one, int *position_two,
-		int *position_three, t_lexer **lexer)
+void	store_into_postion(t_expand_norm *norm, t_lexer **lexer)
 {
-	position_one = (*lexer)->lenght_double;
-	position_two = (*lexer)->lenght_edge;
-	position_three = (*lexer)->lenght_single;
+	norm->position_one = (*lexer)->lenght_double;
+	norm->position_two = (*lexer)->lenght_edge;
+	norm->position_three = (*lexer)->lenght_single;
+	norm->d = (*lexer)->q;
 }
-void	search_helper(t_expand_var *expand , t_lexer **lexer , t_lexer *to_delete , char **p)
+void	search_helper(t_expand_var *expand, t_lexer **lexer, t_lexer *to_delete,
+		char **p)
 {
 	(*lexer)->next = to_delete->next;
 	free(to_delete);
 	*p = (*lexer)->content;
-	// free(expand->newstr);
-	// free(expand->finale_r);
-	// free(expand);
 	reset_info_expand(expand);
 }
+
+void	store_in_var(t_expand_norm *norm, t_lexer *lexer)
+{
+	norm->d = lexer->q;
+	norm->position_one = lexer->lenght_double;
+	norm->position_two = lexer->lenght_edge;
+	norm->position_three = lexer->lenght_single;
+}
+
+void	remove_node(t_expand_norm *norm, t_lexer **lexer, t_lexer *to_delete)
+{
+	free_position(norm);
+	store_into_next(lexer, to_delete);
+	store_into_postion(norm, lexer);
+}
+
 void	search_comapre(t_env *env, t_lexer **lexer)
 {
 	char			*p;
 	t_expand_var	*expand;
 	t_lexer			*to_delete;
-	int				*position_one;
-	int				*position_two;
-	int				*position_three;
-	int				*d;
+	t_expand_norm	*norm;
 
 	to_delete = malloc(sizeof(to_delete));
-	position_one = (*lexer)->lenght_double;
-	position_two = (*lexer)->lenght_edge;
-	position_three = (*lexer)->lenght_single;
-	d = (*lexer)->q;
+	norm = malloc(sizeof(t_expand_norm));
+	store_in_var(norm, *lexer);
 	expand = malloc(sizeof(t_expand_var));
 	reset_info_expand(expand);
 	p = (*lexer)->content;
@@ -333,23 +386,8 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 		if (!expand->result && (*lexer)->next)
 		{
 			to_delete = (*lexer)->next;
-			free_position(position_one, position_two, position_three, d);
-			store_into_next(lexer, to_delete);
-			// free((*lexer)->content);
-			store_into_postion(position_one, position_two, position_three,
-				lexer);
-			// position_one = (*lexer)->lenght_double;
-			// position_two = (*lexer)->lenght_edge;
-			// position_three = (*lexer)->lenght_single;
-			d = (*lexer)->q;
-			// (*lexer)->next = to_delete->next;
-			// free(to_delete);
-			// p = (*lexer)->content;
-			// // free(expand->newstr);
-			// // free(expand->finale_r);
-			// reset_info_expand(expand);
-			search_helper(expand , lexer ,to_delete , &p);
-			// continue;
+			remove_node(norm, lexer, to_delete);
+			search_helper(expand, lexer, to_delete, &p);
 		}
 		else
 			set_null_and_join(expand);

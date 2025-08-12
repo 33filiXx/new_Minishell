@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 07:58:25 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 09:48:03 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,15 @@ typedef struct s_rebuild_var
 	int p;
 	int check ;
 	int lenght_one;
-}							t_rebuild_var;	
+}							t_rebuild_var;
+
+typedef struct s_expand_norm
+{
+	int				*position_one;
+	int				*position_two;
+	int				*position_three;
+	int				*d;
+}							t_expand_norm;	
 
 typedef struct s_expand_var
 {

@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:09:58 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 08:25:11 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 10:11:42 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,17 +283,8 @@ void	redir_creation(t_redirection *redir, t_command *command,
 		redir->type = REDIR_OUT;
 	else if ((*lexer)->token == 2)
 	{
-		// if (get_last_heredoc(*lexer) == 0)
-		// {
 			open_here_docs(redir, docs, lexer, &i);
 			heredoc_parent(&redir, docs, envp, lexer);
-		// }
-		// if (get_last_heredoc(*lexer) == 1)
-		// {
-		// 	*lexer = (*lexer)->next;
-		// 	docs[i++] = ft_strdup((*lexer)->content);
-		// }
-		// (*lexer) = (*lexer)->next; 	
 	}
 	else
 		track_redir(redir, lexer);

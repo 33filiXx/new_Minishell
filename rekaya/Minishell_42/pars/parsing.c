@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 08:05:20 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:11:22 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,15 +233,15 @@ void	update_str_to_single(char **str)
 int	r_and_check_double(t_lexer *lexer, int *j, char **str, int *i,
 		t_store_helper store, int *k)
 {
-	// printf("%s\n" , str);
-	if (store.state_double == 1 && **str != '\'')
+	// printf("%s\n" , *str);
+	if (store.state_double == 1)
 	{
 		// printf("double {%s}\n", *str);
 		lexer->lenght_double[(*j)++] = count_double_lenght(*str);
 		lexer->q[(*i)++] = 1;
 		update_str_to_double(str);
 	}
-	else if (store.state_double == 0 && **str != '\'')
+	else if (store.state_double == 0)
 	{
 		// printf("egde [{%s}]\n", *str);
 		lexer->lenght_edge[(*k)++] = count_egde_lenght(*str);
@@ -309,21 +309,15 @@ void	store_in_q(char *str, t_lexer *lexer)
 	reset_data(&store);
 	while (*str)
 	{
-		// printf(" %d === %d " , store.state_double , store.state_single);
 		check_quotes_state(*str, &store);
-		// printf(" %d === %d " , store.state_double , store.state_single);
-		// exit(1);
 		if ((store.state_double == 1 || store.state_double == 0)
-			 && store.state_single == 0)
+			&& store.state_single == 0)
 		{
-			// printf("%s\n", str);
-			// exit(1);
 			if (r_and_check_double(lexer, &j, &str, &i, store, &k))
 				return ;
-			// printf("\n");
 			if (!*str)
 				break ;
-			check_quotes_state(*tmp, &store);
+			check_quotes_state(*str, &store);
 		}
 		else if (store.state_single == 1 && store.state_double == 0)
 		{
@@ -331,11 +325,10 @@ void	store_in_q(char *str, t_lexer *lexer)
 			update_str_to_single(&str);
 			if (!*str)
 				break ;
-			check_quotes_state(*tmp, &store);
+			check_quotes_state(*str, &store);
 		}
 		str++;
 	}
-	// lexer->q[i] = 0;
 	lexer->lenght_q = i;
 }
 
