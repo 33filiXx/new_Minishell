@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 16:39:44 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 19:20:55 by ykhoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,71 @@ char 						*heredoc_handle(t_redirection **redir, char **dof , char **envp , t_l
 void 						heredoc_parent(t_redirection **redir, char **dof, char **envp, t_lexer **lexer);
 char						*cleanup_argv(char **str, t_lexer **lexer, t_expand_var *expand);
 void						free_one_lexer(t_lexer *lexer);
-
+void						store_equal_env(t_expand_var *expand, char **str, t_lexer **lexer,
+								t_env *env);
+								void	store_int_logic_var(t_expand_var *expand, t_lexer **lexer, int *stop);
+void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
+			t_env *env);
+void	expand_logic_sigle(t_expand_var *expand, t_lexer *lexer, char **p);
+void	reset_info_expand(t_expand_var *expand);
+void	free_position(t_expand_norm *norm);
+void	store_into_next(t_lexer **lexer, t_lexer *to_delete);
+void	store_into_postion(t_expand_norm *norm, t_lexer **lexer);
+void	handle_double_single(t_env *env, t_lexer **lexer, t_expand_var *expand,
+			char **p);
+void	set_null_and_join(t_expand_var *expand);
+int	check_edge_cases_helper(char **str, t_expand_var *expand, char *tmp, int *i);
+void	free_argv(char **argv);
+void	free_redi(t_redirection *redir);
+void	add_redir_back(t_redirection **head, t_redirection *new);
+int	count_heredoc(t_lexer *lexer);
+void	open_here_docs(t_redirection *redir, char **docs, t_lexer **lexer,
+			int *i);
+void	track_redir(t_redirection *redir, t_lexer **lexer);
+void	add_and_move(t_command *command, t_redirection *redir, t_lexer **lexer);
+void	store_word_in_command(t_lexer **lexer, int *i, t_command *command,
+			char **envp);
+t_command	*new_command_node(void);
+void	add_command_back(t_command **head, t_command *new);
+int	count_argv(t_lexer *lexer);
+int	found_pipe(t_lexer *lexer);
+void	change_pipe_value(t_command *command, int *check_out);
+void	react_call(t_lexer **lexer, t_command *command, int *i, char **envp);
+void	change_pipe_checke_v(t_lexer **lexer, t_command *command,
+			int *check_pipe);
+void	skip_empty_quotes(char *str, int *i);
+void	check_quotes_state(char str, t_store_helper *store);
+int	go_out(t_store_helper *store, char *str, int *p);
+void	helper_store(char *str, int *p, t_store_helper *store);
+int	quotes_strlen(char *s);
+void	reset_data(t_store_helper *store);
+void	last_store(t_lexer **lexer, char *str, char *tmp, int *i);
+int	my_strlen(const char *s);
+void	get_last_normal(t_lexer *lexer, char *str);
+void	store_three_ho(char *str, int *checker_quotes, int *stalker);
+void	store_three_ht(char *str, int *i, t_lexer **lexer);
+void	store_with_quotes(t_lexer **lexer, char *str, int *i,
+		int *checker_quotes);
+void	store_one(char *str, t_lexer **lexer, int *i);
+void	store_two(char *str, t_lexer **lexer, int *i);
+int	redirection_counter(char *str);
+int	edge_case_a(t_lexer *lexer);
+int	check_redirection_h(t_lexer *lexer);
+int	check_if_nofile_h(t_lexer *lexer);
+void	store_into_nodes(char *str, t_lexer **lexer);
+int	syntax_error_o_a(t_lexer *lexer);
+int	syntax_error_i_h(t_lexer *lexer);
+int	count_double_lenght(char *str);
+void	update_str_to_double(char **str);
+void	update_str_to_single(char **str);
+int	count_egde_lenght(char *str);
+void	update_edge_inside(char **str);
+int	free_and_store_in_q(char *str, t_lexer *lexer);
+void	store_in_lexer_single(char *tmp, t_store_helper store, t_lexer *lexer,
+		t_store_in_q_var *var);
+void	r_and_check_double(t_lexer *lexer, t_store_in_q_var *var, char **str,
+		t_store_helper store);
+void	get_last_node(t_lexer *lexer, char *str);
 
 // exec builtin
 int		echo_builtin(char **args);
@@ -259,9 +323,7 @@ void	cleanup_pipeline(int **pipes, int pipes_allocated, pid_t *pids,
 //signals
 void	ctrl_d_handle(t_env *env);
 void	sigint_handler(int sig);
-void	heredoc_sigint_handler(int sig);
 void	sigint_han_p(int sig);
-void	child_sigint_handler(int sig);
 void	sig_herdoc(int sig);
 
 #endif

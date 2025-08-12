@@ -6,7 +6,7 @@
 /*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:45:33 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/09 21:33:14 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 17:48:33 by ykhoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,6 @@ void	sigint_han_p(int sig) // crtl c
 	*exit_stat() = 130;
 	rl_on_new_line();
 	rl_replace_line("", 0);
-}
-
-void	heredoc_sigint_handler(int sig)
-{
-	(void)sig;
-	*exit_stat() = 130;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
-
-void	child_sigint_handler(int sig)
-{
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	exit(130);
 }
 
 void	sig_herdoc(int sig)

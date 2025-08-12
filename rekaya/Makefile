@@ -7,6 +7,10 @@ Minishell_42/pars/lexer_h.c  Minishell_42/exec/builtin/echo.c  Minishell_42/exec
 Minishell_42/exec/builtin/cd.c Minishell_42/exec/builtin/pwd.c Minishell_42/exec/builtin/exit.c Minishell_42/exec/env/env.c Minishell_42/exec/env/env_2.c Minishell_42/exec/env/extract_path.c \
 Minishell_42/exec/builtin/export.c Minishell_42/exec/builtin/export_2.c Minishell_42/exec/builtin/unset.c Minishell_42/exec/exc/init_ex.c Minishell_42/exec/exc/init_ex_2.c Minishell_42/exec/exc/init_ex_3.c Minishell_42/exec/exc/pipes.c \
 Minishell_42/exec/exc/pipe_helpers.c  Minishell_42/exec/exc/exc.c Minishell_42/exec/exc/exc_2.c Minishell_42/exec/exc/redirections.c Minishell_42/exec/signals/signal.c \
+Minishell_42/pars/expand_3.c Minishell_42/pars/expand_4.c Minishell_42/pars/expand_5.c Minishell_42/pars/expand_6.c  \
+Minishell_42/pars/parser_1.c Minishell_42/pars/parser_2.c Minishell_42/pars/parser_3.c Minishell_42/pars/parser_4.c Minishell_42/pars/parser_5.c \
+Minishell_42/pars/parsing_1.c Minishell_42/pars/parsing_2.c Minishell_42/pars/parsing_3.c Minishell_42/pars/parsing_4.c Minishell_42/pars/parsing_5.c \
+Minishell_42/pars/parsing_6.c Minishell_42/pars/parsing_7.c Minishell_42/pars/parsing_8.c Minishell_42/pars/parsing_9.c 
 
 OBJS = $(SRCS:.c=.o)
 LIB = ./ft_libft/libft.a
