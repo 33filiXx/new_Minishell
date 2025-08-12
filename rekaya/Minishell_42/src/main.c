@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 22:00:19 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 15:50:01 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:55:19 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int main(int argc, char *argv[], char **envp)
         // exit(1);
         expand(env , lexer_list);
         int parser_status = parser(lexer_list, &command, env_char );
-        print_node(command);
+        // print_node(command);
         free_split(env_char);
         if (parser_status == 0 && command)
         {

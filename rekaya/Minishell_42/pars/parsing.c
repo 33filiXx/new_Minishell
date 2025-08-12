@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 15:46:24 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 17:00:32 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,20 +138,6 @@ void	skip_empty_quotes(char *str, int *i)
 	*i = p;
 }
 
-int	finde_dollar(char str)
-{
-	if (str == '$')
-		return (1);
-	return (0);
-}
-int	finde_edge_quote(char str)
-{
-	if (!str)
-		return (0);
-	if (str == '"' || str == '\'')
-		return (1);
-	return (0);
-}
 int	count_double_lenght(char *str)
 {
 	int	i;
@@ -338,10 +324,6 @@ void	store_in_q(char *str, t_lexer *lexer)
 
 	tmp = str;
 	recall(&store , str , &var , lexer);
-	// reset_q_var(&var);
-	// reset_data(&store);
-	// if (free_and_store_in_q(str, lexer))
-	// 	return ;
 	store_in_lexer_single(tmp, store, lexer, &var);
 	reset_data(&store);
 	while (*str)
@@ -387,14 +369,12 @@ int	size_normal_length(const char *s)
 
 void	get_last_normal(t_lexer *lexer, char *str)
 {
-	// printf("%s\n" , str);
 	while (lexer)
 	{
 		if (lexer->next == NULL)
 		{
 			lexer->q[0] = 0;
 			lexer->lenght_normal = size_normal_length(str);
-			// printf("%d +++" , lexer->lenght_normal);
 		}
 		lexer = lexer->next;
 	}
