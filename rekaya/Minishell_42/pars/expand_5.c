@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_6.c                                         :+:      :+:    :+:   */
+/*   expand_5.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:14:22 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 17:27:51 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 23:29:43 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,21 @@ char	*cleanup_argv(char **str, t_lexer **lexer, t_expand_var *expand)
 void	store_equal_env_helper(t_expand_var *expand, char *to_cmp,
 							t_env *tmp_env)
 {
+	char *tmp;
 	while (tmp_env)
 	{
 		if (tmp_env->value && ft_strcmp(to_cmp + 1, tmp_env->key) == 0)
 		{
-			expand->result = ft_strjoin(expand->result, tmp_env->value);
+			tmp = expand->result;
+			expand->result = ft_strjoin(tmp, tmp_env->value);
+			free(tmp);
 			free(to_cmp);
 			to_cmp = NULL;
 			break ;
 		}
 		tmp_env = tmp_env->next;
 	}
+	free(to_cmp);
 }
 
 void	store_equal_env(t_expand_var *expand, char **str, t_lexer **lexer,
@@ -99,7 +103,7 @@ void	store_equal_env(t_expand_var *expand, char **str, t_lexer **lexer,
 	to_cmp = malloc(ft_strlen(*str) + 1);
 	store_int_logic_var(expand, lexer, &stop);
 	tmp_env = env;
-	if (*(*str + 1) && ft_isalpha(*(*str + 1)))
+	if (*(*str + 1) && ft_isalpha(*(*str + 1)) && expand->lenght < stop)
 	{
 		while (*str)
 		{

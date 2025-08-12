@@ -2,3 +2,4 @@
 .vscode
 *.a
 minishell
+.gdb_history

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:15:44 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 17:22:28 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 23:26:35 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_edge_one(t_expand_var *expand, int stop, char **p)
 {
-	if (**p == '$' && expand->lenght == stop - 1)
+	if (**p == '$' && expand->lenght == stop)
 	{
 		expand->result = ft_strjoin(expand->result, "$");
 		(*p)++;
@@ -38,6 +38,7 @@ void	handle_without_dollar(t_expand_var *expand, char *one, char **p)
 	one[0] = **p;
 	one[1] = '\0';
 	expand->str = ft_strjoin(expand->result, one);
+	free(expand->result);
 	expand->result = expand->str;
 	(*p)++;
 	expand->lenght += 1;
@@ -48,7 +49,7 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 {
 	int		stop;
 	char	one[2];
-
+	
 	stop = 0;
 	store_int_logic_var(expand, lexer, &stop);
 	while (**p)
@@ -60,7 +61,7 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 				break ;
 			expand->newstr = cleanup_argv(p, lexer, expand);
 			if (expand->edge == 1)
-				expand->result = ft_strjoin(expand->result, expand->newstr);
+				expand->result = strjoin_free_both(expand->result, expand->newstr);
 			if (**p == '$')
 				store_equal_env(expand, p, lexer, env);
 		}
@@ -82,6 +83,7 @@ void	expand_logic_sigle(t_expand_var *expand, t_lexer *lexer, char **p)
 		one[0] = **p;
 		one[1] = '\0';
 		expand->str = ft_strjoin(expand->result, one);
+		free(expand->result);
 		expand->result = expand->str;
 		(*p)++;
 		expand->lenght += 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:39:20 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 18:44:23 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 00:01:30 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,25 @@ void	redir_creation(t_redirection *redir, t_command *command,
 	int		i;
 
 	i = 0;
-	docs = NULL;
-	docs = ft_calloc((count_heredoc(*lexer) + 1), sizeof(char *));
-	redir->filename = ft_strdup((*lexer)->next->content);
+	docs = ft_calloc((count_heredoc(*lexer) + 2), sizeof(char *));
 	redir->next = NULL;
 	if ((*lexer)->token == TRUNC)
+	{
 		redir->type = REDIR_OUT;
-	else if ((*lexer)->token == 2)
+		redir->filename = ft_strdup((*lexer)->next->content);
+	}
+	else if ((*lexer)->token == HERDOC)
 	{
 		open_here_docs(redir, docs, lexer, &i);
 		heredoc_parent(&redir, docs, envp, lexer);
 	}
 	else
+	{
 		track_redir(redir, lexer);
+		redir->filename = ft_strdup((*lexer)->next->content);
+	}
 	add_and_move(command, redir, lexer);
-	if (!docs)
+	if (docs)
 		free_split(docs);
 }
 

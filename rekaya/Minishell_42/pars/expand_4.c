@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:17:05 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 17:23:31 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 23:08:20 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_double_single(t_env *env, t_lexer **lexer, t_expand_var *expand,
 
 void	set_null_and_join(t_expand_var *expand)
 {
-	expand->finale_r = ft_strjoin(expand->finale_r, expand->result);
+	expand->finale_r = strjoin_free_both(expand->finale_r, expand->result);
 	expand->result = NULL;
 	expand->newstr = NULL;
 	expand->lenght = 0;

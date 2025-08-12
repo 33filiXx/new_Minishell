@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 07:42:53 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/09 21:49:44 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 23:57:31 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ char	*namegen(void)
 	buf = malloc(1);
 	if (!file || !buf)
 	{
-		return (free(file), free(buf), NULL);
+		free(file);
+		free(buf);
+		if (fd >= 0)
+			close(fd);
+		return (NULL);
 	}
 	j = 0;
 	while (valid_data <= 0)
@@ -46,8 +50,15 @@ char	*namegen(void)
 			file[j++] = *buf;
 	}
 	if (valid_data < 0)
+	{
+		free(buf);
+		free(file);
+		if (fd >= 0)
+			close(fd);
 		return (NULL);
+	}
 	file[j] = '\0';
+	free(buf);
 	close(fd);
 	return (file);
 }
@@ -55,10 +66,12 @@ char	*namegen(void)
 char	*randgen(char *s)
 {
 	char	*pathname;
+	char	*tmp;
 
 	pathname = "/tmp/";
-	// printf("-->  %s\n" , namegen());
-	s = ft_strjoin(pathname, namegen());
+	tmp = namegen();
+	s = ft_strjoin(pathname, tmp);
+	free(tmp);
 	return (s);
 }
 
@@ -115,9 +128,11 @@ char	*get_value(char *get)
 	i = 0;
 	j = 0;
 	line = malloc(ft_strlen(get) + 1);
+	if (!line)
+		return (NULL);
 	while (get[i] && get[i] != '=')
 		i++;
-	i++;	
+	i++;
 	while (get[i])
 		line[j++] = get[i++];
 	line[j] = '\0';
@@ -221,7 +236,7 @@ static int	alloc_rebuild(t_rebuild_var **rebuild, char *lexer, char *env,
 	*result = malloc(((*rebuild)->lenght_one + (*rebuild)->lenght_two) + 1);
 	if (!(*result))
 	{
-		free(rebuild);
+		free(*rebuild);
 		return (1);
 	}
 	return (0);
@@ -248,6 +263,7 @@ static char	*rebuild_and_stor(char **lexer, char *env)
 		result[rebuild->j++] = *(*lexer)++;
 	}
 	result[rebuild->j] = '\0';
+	free(rebuild);
 	return (result);
 }
 
@@ -284,14 +300,16 @@ void	expand_line(char **line, char **envp)
 	char	*clean_line;
 	char	*result;
 	char	one[2];
-	char *finale_result;
-	// char *valuee;
+	char	*finale_result;
+	char	*origin_line;
+	char	*tmp_join;
+	char	*val;
 	
 	new_line = NULL;
 	finale_line = *line;
+	origin_line = *line;
 	finale_result = NULL;
 	clean_line = NULL;
-	// valuee = NULL;
 	char **tmp = line;
 	while (*finale_line)
 	{
@@ -302,19 +320,15 @@ void	expand_line(char **line, char **envp)
 		while (tmp[i])
 		{
 			new_line = ft_newdup(tmp[i]);
-			// printf("key :%s\n" , new_line);
-			// printf("clean :%s\n" , clean_line);
-			// printf("value :%s\n" , get_value(envp[i]));
-			// printf("line :%s\n" , finale_line);
-			// exit(1);
 			if (ft_strcmp(new_line, clean_line) == 0)
-			{				
-				result = rebuild_and_stor(&finale_line, get_value(tmp[i]));
-				finale_result = ft_strjoin(finale_result , result);
-				// printf("R :%s\n" , finale_line);
-				// exit(1);
+			{
+				val = get_value(tmp[i]);
+				result = rebuild_and_stor(&finale_line, val);
+				free(val);
+				free(new_line); // free on match to avoid leak
 				break;
 			}
+			free(new_line);
 			i++;
 		}
 		if (ft_strcmp(clean_line , "\0") == 0)
@@ -327,28 +341,29 @@ void	expand_line(char **line, char **envp)
 				}
 				one[0] = *finale_line;
 				one[1] = '\0';
-				result = ft_strjoin(result, one);
+				tmp_join = ft_strjoin(result, one);
+				free(result);
+				result = tmp_join;
 				finale_line++;
 			}
-			// update_to_dollar(line);
 		}
 		else
 		{
-			// printf("%s\n" , clean_line);
-			// exit(1);
 			if(ft_strcmp(clean_line , "?"))
 				update_to_dollar(&finale_line);
 			else
 			{
-				// printf
 				result = ft_itoa((*exit_stat()));
 				update_exit(&finale_line);				
 			}
 		}
-		finale_result = ft_strjoin(finale_result , result);
+		free(clean_line);
+		tmp_join = ft_strjoin(finale_result , result);
+		free(finale_result);
+		free(result);
+		finale_result = tmp_join;
 	}
-	// printf("R :%s\n" , finale_result);
-	// exit(1);
+	free(origin_line);
 	*line = finale_result;
 }
 
@@ -360,7 +375,7 @@ char *heredoc_handle(t_redirection **redir, char **dof, char **envp,
 	char	*filename;
 	char	*line;
 	int		fd;
-	char **tmp = dof;
+	char	**tmp = dof;
 	
 	i = 0;
 	fd = file_to_write_on(&filename);
@@ -375,7 +390,6 @@ char *heredoc_handle(t_redirection **redir, char **dof, char **envp,
 		if (!line)
 		{
 			dof = tmp;
-			// (*lexer) = (*lexer)->next;
 			close(fd);
 			return (filename);
 		}
@@ -384,8 +398,8 @@ char *heredoc_handle(t_redirection **redir, char **dof, char **envp,
 		if (!ft_strcmp(dof[i] ,"\0"))
 		{
 			dof = tmp;
-			// (*lexer) = (*lexer)->next;
 			close(fd);
+			free(line);
 			return (filename);	
 		}
 		if (!ft_strcmp(dof[i + 1] , "\0"))
@@ -393,10 +407,11 @@ char *heredoc_handle(t_redirection **redir, char **dof, char **envp,
 			write(fd, line, ft_strlen(line));
 			write(fd, "\n", 1);	
 		}
+		free(line);
 	}
 }
 
-void heredoc_parent(t_redirection **redir, char **dof, char **envp, t_lexer **lexer)
+void	heredoc_parent(t_redirection **redir, char **dof, char **envp, t_lexer **lexer)
 {
     pid_t pid;
     int status;
@@ -417,8 +432,12 @@ void heredoc_parent(t_redirection **redir, char **dof, char **envp, t_lexer **le
         signal(SIGQUIT, SIG_IGN);
         filename = heredoc_handle(redir, dof, envp, lexer);
         if (filename)
-			write(pipefd[1], filename, ft_strlen(filename));
+        {
+            write(pipefd[1], filename, ft_strlen(filename));
+            free(filename); // free child-only allocation to avoid reachable memory
+        }
         close(pipefd[1]);
+        rl_clear_history(); // free readline history in child process only
         exit(0);
     }
     else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_6.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:20:04 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 18:57:29 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 23:39:50 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,42 @@ void	remove_node(t_expand_norm *norm, t_lexer **lexer, t_lexer *to_delete)
 	store_into_postion(norm, lexer);
 }
 
+void handle_extra(t_expand_var *expand , t_lexer **lexer , t_expand_norm *norm )
+{
+	if (ft_strcmp((*lexer)->content, "\0")
+		&& !ft_strcmp(expand->finale_r, "\0"))
+	{
+		if ((*lexer)->content)
+			free((*lexer)->content);
+		(*lexer)->content = NULL;
+	}
+	else
+	{
+		free((*lexer)->content);
+		(*lexer)->content = ft_strdup(expand->finale_r);
+	}
+	if (expand->finale_r)
+	{
+		free(expand->finale_r);
+		expand->finale_r = NULL;
+	}
+	(*lexer)->lenght_double = norm->position_one;
+	(*lexer)->lenght_edge = norm->position_two;
+	(*lexer)->lenght_single = norm->position_three;
+	(*lexer)->q = norm->d;
+	free(expand->result);
+	free(expand);
+	free(norm);
+}
+
 void	search_comapre(t_env *env, t_lexer **lexer)
 {
-	char			*p;
-	t_expand_var	*expand;
-	t_lexer			*to_delete;
-	t_expand_norm	*norm;
+	char            *p;
+	t_expand_var    *expand;
+	t_lexer         *to_delete;
+	t_expand_norm   *norm;
 
-	to_delete = malloc(sizeof(to_delete));
+	to_delete = NULL;
 	norm = malloc(sizeof(t_expand_norm));
 	store_in_var(norm, *lexer);
 	expand = malloc(sizeof(t_expand_var));
@@ -61,11 +89,7 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 		else
 			set_null_and_join(expand);
 	}
-	if (ft_strcmp((*lexer)->content, "\0")
-		&& !ft_strcmp(expand->finale_r, "\0"))
-		(*lexer)->content = NULL;
-	else
-		(*lexer)->content = ft_strdup(expand->finale_r);
+	handle_extra(expand , lexer , norm);
 }
 
 void	expand(t_env *env, t_lexer *lexer)

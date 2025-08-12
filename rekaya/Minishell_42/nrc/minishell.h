@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 21:59:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:20:55 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/12 21:18:51 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ void	store_in_lexer_single(char *tmp, t_store_helper store, t_lexer *lexer,
 void	r_and_check_double(t_lexer *lexer, t_store_in_q_var *var, char **str,
 		t_store_helper store);
 void	get_last_node(t_lexer *lexer, char *str);
+char	*strjoin_free_both(char *s1, char *s2);
 
 // exec builtin
 int		echo_builtin(char **args);

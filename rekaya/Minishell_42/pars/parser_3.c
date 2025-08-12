@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:38:19 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 18:39:03 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 00:09:54 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,18 @@ void	open_here_docs(t_redirection *redir, char **docs, t_lexer **lexer,
 			int *i)
 {
 	redir->type = HEREDOC;
-	*lexer = (*lexer)->next;
-	docs[(*i)++] = ft_strdup((*lexer)->content);
+	// *lexer = (*lexer)->next;
+	docs[(*i)++] = ft_strdup((*lexer)->next->content);
 	docs[(*i)] = ft_strdup("\0");
 }
 
 void	track_rest(t_lexer **lexer)
 {
 	if ((*lexer) && (*lexer)->next && (*lexer)->token == WORD)
+	{
+		// return;
 		(*lexer) = (*lexer)->next;
+	}
 	else if ((*lexer) && !(*lexer)->next)
 		(*lexer) = (*lexer)->next;
 }
