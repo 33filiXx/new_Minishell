@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:58:56 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 12:23:10 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:07:52 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,40 @@ void	reset_somme_info_expand(t_expand_var *expand)
 	expand->lenght = 0;
 }
 
+void	store_int_logic_var(t_expand_var *expand, t_lexer **lexer, int *stop)
+{
+	if ((*lexer)->q[expand->i] == 0)
+		*stop = (*lexer)->lenght_normal;
+	else if ((*lexer)->q[expand->i] == 1)
+		*stop = *((*lexer)->lenght_double);
+	else if ((*lexer)->q[expand->i] == 2)
+		*stop = *((*lexer)->lenght_edge);
+}
+
+int	check_edge_cases_helper(char **str, t_expand_var *expand, char *tmp, int *i)
+{
+	if (**str == '$' && *(*str + 1) && ft_isalpha(*(*str + 1)))
+		return (1);
+	if (*(*str) == '$' && !*(*str + 1))
+	{
+		tmp[(*i)++] = **str;
+		(*str)++;
+		expand->lenght++;
+		return (1);
+	}
+	tmp[(*i)++] = **str;
+	(*str)++;
+	expand->lenght++;
+	return (0);
+}
+int	mini_helper(char *tmp, int i, char **newstr)
+{
+	tmp[i] = '\0';
+	*newstr = ft_strdup(tmp);
+	free(tmp);
+	return (1);
+}
+
 int	check_edge_cases(char **newstr, char **str, t_expand_var *expand,
 		t_lexer **lexer)
 {
@@ -64,43 +98,24 @@ int	check_edge_cases(char **newstr, char **str, t_expand_var *expand,
 	int		i;
 	int		stop;
 
+	i = 0;
 	tmp = malloc(ft_strlen(*str) + 1);
 	if (!tmp)
 		return (0);
-	i = 0;
-	if ((*lexer)->q[expand->i] == 0)
-		stop = (*lexer)->lenght_normal;
-	else if ((*lexer)->q[expand->i] == 1)
-		stop = *((*lexer)->lenght_double);
-	else if ((*lexer)->q[expand->i] == 2)
-		stop = *((*lexer)->lenght_edge);
+	store_int_logic_var(expand, lexer, &stop);
 	if (**str == '$' && *(*str + 1) && ft_isalpha(*(*str + 1)) != 1 && *(*str
 			+ 1) != '?')
 	{
 		while (*str && ft_isalpha((*(*str))) != 1 && **str == '$' && *(*str
 				+ 1) != '?')
 		{
-			if (**str == '$' && *(*str + 1) && ft_isalpha(*(*str + 1)))
-			{
+			if (check_edge_cases_helper(str, expand, tmp, &i))
 				break ;
-			}
-			if (*(*str) == '$' && !*(*str + 1))
-			{
-				tmp[i++] = **str;
-				(*str)++;
-				expand->lenght++;
-				break ;
-			}
-			tmp[i++] = **str;
-			(*str)++;
-			expand->lenght++;
 			if (expand->lenght == stop)
 				break ;
 		}
-		tmp[i] = '\0';
-		*newstr = ft_strdup(tmp);
-		free(tmp);
-		return (1);
+		if (mini_helper(tmp, i, newstr))
+			return (1);
 	}
 	free(tmp);
 	return (0);
@@ -126,7 +141,23 @@ char	*cleanup_argv(char **str, t_lexer **lexer, t_expand_var *expand)
 	return ("");
 }
 
-void	store_equal_env(t_expand_var *expand, char **str, t_lexer *lexer,
+void	store_equal_env_helper(t_expand_var *expand, char *to_cmp,
+		t_env *tmp_env)
+{
+	while (tmp_env)
+	{
+		if (tmp_env->value && ft_strcmp(to_cmp + 1, tmp_env->key) == 0)
+		{
+			expand->result = ft_strjoin(expand->result, tmp_env->value);
+			free(to_cmp);
+			to_cmp = NULL;
+			break ;
+		}
+		tmp_env = tmp_env->next;
+	}
+}
+
+void	store_equal_env(t_expand_var *expand, char **str, t_lexer **lexer,
 		t_env *env)
 {
 	t_env	*tmp_env;
@@ -137,12 +168,7 @@ void	store_equal_env(t_expand_var *expand, char **str, t_lexer *lexer,
 	stop = 0;
 	i = 0;
 	to_cmp = malloc(ft_strlen(*str) + 1);
-	if (lexer->q[expand->i] == 0)
-		stop = lexer->lenght_normal;
-	else if (lexer->q[expand->i] == 1)
-		stop = *lexer->lenght_double;
-	else if (lexer->q[expand->i] == 2)
-		stop = *lexer->lenght_edge;
+	store_int_logic_var(expand, lexer, &stop);
 	tmp_env = env;
 	if (*(*str + 1) && ft_isalpha(*(*str + 1)))
 	{
@@ -156,26 +182,7 @@ void	store_equal_env(t_expand_var *expand, char **str, t_lexer *lexer,
 		}
 		to_cmp[i] = '\0';
 	}
-	while (tmp_env)
-	{
-		if (tmp_env->value && ft_strcmp(to_cmp + 1, tmp_env->key) == 0)
-		{
-			expand->result = ft_strjoin(expand->result, tmp_env->value);
-			free(to_cmp);
-			to_cmp = NULL;
-			break ;
-		}
-		tmp_env = tmp_env->next;
-	}
-}
-void	store_int_logic_var(t_expand_var *expand, t_lexer **lexer, int *stop)
-{
-	if ((*lexer)->q[expand->i] == 0)
-		*stop = (*lexer)->lenght_normal;
-	else if ((*lexer)->q[expand->i] == 1)
-		*stop = *((*lexer)->lenght_double);
-	else if ((*lexer)->q[expand->i] == 2)
-		*stop = *((*lexer)->lenght_edge);
+	store_equal_env_helper(expand, to_cmp, tmp_env);
 }
 
 int	check_edge_one(t_expand_var *expand, int stop, char **p)
@@ -198,7 +205,7 @@ void	handle_exit_status(t_expand_var *expand, char **p)
 	}
 }
 
-void	handle_without_dollar(t_expand_var *expand , char *one , char **p)
+void	handle_without_dollar(t_expand_var *expand, char *one, char **p)
 {
 	one[0] = **p;
 	one[1] = '\0';
@@ -215,55 +222,22 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 	char	one[2];
 
 	stop = 0;
-	// if ((*lexer)->q[expand->i] == 0)
-	// 	stop = (*lexer)->lenght_normal;
-	// else if ((*lexer)->q[expand->i] == 1)
-	// 	stop = *((*lexer)->lenght_double);
-	// else if ((*lexer)->q[expand->i] == 2)
-	// 	stop = *((*lexer)->lenght_edge);
 	store_int_logic_var(expand, lexer, &stop);
 	while (**p)
 	{
 		if (**p == '$')
 		{
-			// if (**p == '$' && expand->lenght == stop - 1)
-			// {
-			// 	expand->result = ft_strjoin(expand->result, "$");
-			// 	(*p)++;
-			// 	break ;
-			// }
 			handle_exit_status(expand, p);
 			if (check_edge_one(expand, stop, p))
 				break ;
-			// while (**p == '$' && *(*p + 1) && *(*p + 1) == '?')
-			// {
-			// 	(*p) += 2;
-			// 	expand->lenght += 2;
-			// 	expand->result = ft_strjoin(expand->result,
-			// 			ft_itoa((*exit_stat())));
-			// }
 			expand->newstr = cleanup_argv(p, lexer, expand);
 			if (expand->edge == 1)
 				expand->result = ft_strjoin(expand->result, expand->newstr);
 			if (**p == '$')
-				store_equal_env(expand, p, *lexer, env);
-			// if (!ft_strcmp("$", *p))
-			// {
-			// 	expand->result = ft_strjoin(expand->result, *p);
-			// 	(*p)++;
-			// 	expand->lenght++;
-			// }
+				store_equal_env(expand, p, lexer, env);
 		}
 		else
-		{
-			// one[0] = **p;
-			// one[1] = '\0';
-			// expand->str = ft_strjoin(expand->result, one);
-			// expand->result = expand->str;
-			// (*p)++;
-			// expand->lenght += 1;
-			handle_without_dollar(expand , one , p);
-		}
+			handle_without_dollar(expand, one, p);
 		if (expand->lenght == stop)
 			break ;
 	}
