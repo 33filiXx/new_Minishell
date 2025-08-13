@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_ex_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 22:10:18 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/05 15:06:09 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 05:35:27 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 int	handle_unset_command(t_command *cmd, t_env **env)
 {
 	int	i;
+	int	ret;
 
 	i = 1;
+	ret = 0;
 	while (cmd->argv[i])
 	{
 		unset_env(env, cmd->argv[i]);
 		i++;
 	}
-	return (0);
+	return (*exit_stat() = ret);
 }
 
 int	handle_exit_command(t_command *cmd, int abi)
@@ -56,7 +58,7 @@ int	handle_redirection_only(t_command *cmd)
 }
 
 int	setup_builtin_redirections(t_command *cmd, int *save_stdin,
-	int *save_stdout)
+		int *save_stdout)
 {
 	int	ret;
 

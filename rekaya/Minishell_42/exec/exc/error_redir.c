@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   redir_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/01 07:42:53 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/13 04:50:00 by wel-mjiy         ###   ########.fr       */
+/*   Created: 2025/08/13 04:26:06 by wel-mjiy          #+#    #+#             */
+/*   Updated: 2025/08/13 04:27:08 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../nrc/minishell.h"
+#include "../../nrc/minishell.h"
 
-void	reset_rebuild_var(t_rebuild_var *rebuild, char *lexer, char *env)
+int	check_ambigoust(t_command *cmd, t_redirection *redir)
 {
-	rebuild->check = 0;
-	rebuild->j = 0;
-	rebuild->p = 0;
-	rebuild->lenght_one = ft_strlen(lexer);
-	rebuild->lenght_two = ft_strlen(env);
-}
-
-int	open_random_fd(void)
-{
-	return (open("/dev/random", O_RDONLY));
+	if ((!redir->filename || ft_strcmp(redir->filename, "\0") == 0)
+		&& cmd->redirs->type != 4)
+	{
+		ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+		return (1);
+	}
+	else if (!redir->filename)
+		return (1);
+	else
+		return (0);
 }

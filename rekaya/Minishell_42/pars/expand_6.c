@@ -6,14 +6,14 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:20:04 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 23:39:50 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 04:57:33 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../nrc/minishell.h"
 
 void	search_helper(t_expand_var *expand, t_lexer **lexer, t_lexer *to_delete,
-			char **p)
+		char **p)
 {
 	(*lexer)->next = to_delete->next;
 	free(to_delete);
@@ -41,10 +41,10 @@ void	remove_node(t_expand_norm *norm, t_lexer **lexer, t_lexer *to_delete)
 	store_into_postion(norm, lexer);
 }
 
-void handle_extra(t_expand_var *expand , t_lexer **lexer , t_expand_norm *norm )
+void	handle_extra(t_expand_var *expand, t_lexer **lexer, t_expand_norm *norm)
 {
-	if (ft_strcmp((*lexer)->content, "\0")
-		&& !ft_strcmp(expand->finale_r, "\0"))
+	if (ft_strcmp((*lexer)->content, "\0") && !ft_strcmp(expand->finale_r,
+			"\0"))
 	{
 		if ((*lexer)->content)
 			free((*lexer)->content);
@@ -71,10 +71,10 @@ void handle_extra(t_expand_var *expand , t_lexer **lexer , t_expand_norm *norm )
 
 void	search_comapre(t_env *env, t_lexer **lexer)
 {
-	char            *p;
-	t_expand_var    *expand;
-	t_lexer         *to_delete;
-	t_expand_norm   *norm;
+	char			*p;
+	t_expand_var	*expand;
+	t_lexer			*to_delete;
+	t_expand_norm	*norm;
 
 	to_delete = NULL;
 	norm = malloc(sizeof(t_expand_norm));
@@ -94,17 +94,5 @@ void	search_comapre(t_env *env, t_lexer **lexer)
 		else
 			set_null_and_join(expand);
 	}
-	handle_extra(expand , lexer , norm);
-}
-
-void	expand(t_env *env, t_lexer *lexer)
-{
-	while (lexer)
-	{
-		if (lexer->token != 2)
-			search_comapre(env, &lexer);
-		else
-			lexer = lexer->next;
-		lexer = lexer->next;
-	}
+	handle_extra(expand, lexer, norm);
 }

@@ -6,14 +6,14 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:39:20 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/13 00:01:30 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 02:57:32 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../nrc/minishell.h"
 
 void	redir_creation(t_redirection *redir, t_command *command,
-			t_lexer **lexer, char **envp)
+		t_lexer **lexer, char **envp)
 {
 	char	**docs;
 	int		i;
@@ -46,8 +46,7 @@ int	store_in_redirect(t_lexer **lexer, t_command *command, char **envp)
 	t_redirection	*redir;
 
 	redir = NULL;
-	while ((*lexer) && ((*lexer)->token == HERDOC
-			|| (*lexer)->token == TRUNC
+	while ((*lexer) && ((*lexer)->token == HERDOC || (*lexer)->token == TRUNC
 			|| (*lexer)->token == INPUT || (*lexer)->token == APPEND))
 	{
 		if (!(*lexer)->next || (*lexer)->next->token != WORD)
@@ -79,7 +78,7 @@ int	count_argv(t_lexer *lexer)
 }
 
 void	change_pipe_checke_v(t_lexer **lexer, t_command *command,
-			int *check_pipe)
+		int *check_pipe)
 {
 	if (*lexer && (*lexer)->token == PIPE)
 	{

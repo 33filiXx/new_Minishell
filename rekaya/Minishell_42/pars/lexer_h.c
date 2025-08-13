@@ -6,14 +6,14 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:33 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/13 01:31:28 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 04:24:29 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../nrc/minishell.h"
 
-static int	init_lexer_fields(t_lexer *new_node, e_tokens token,
-			t_quotes quotes, char *content)
+static int	init_lexer_fields(t_lexer *new_node, t_tokens token,
+		t_quotes quotes, char *content)
 {
 	new_node->token = token;
 	new_node->quotes = quotes;
@@ -29,7 +29,7 @@ static int	init_lexer_fields(t_lexer *new_node, e_tokens token,
 	return (1);
 }
 
-t_lexer	*creat_node(char *content, e_tokens token, t_quotes quotes)
+t_lexer	*creat_node(char *content, t_tokens token, t_quotes quotes)
 {
 	t_lexer	*new_node;
 
@@ -52,15 +52,13 @@ t_lexer	*creat_node(char *content, e_tokens token, t_quotes quotes)
 	return (new_node);
 }
 
-void	insert_at_end(t_lexer **head, char *content, e_tokens token,
-			t_quotes quotes)
+void	insert_at_end(t_lexer **head, char *content, t_tokens token,
+		t_quotes quotes)
 {
 	t_lexer	*new_node;
 	t_lexer	*temp;
 
-	// char *tmp = content;
 	new_node = creat_node(content, token, quotes);
-	// free(tmp);
 	if (*head == NULL)
 	{
 		*head = new_node;

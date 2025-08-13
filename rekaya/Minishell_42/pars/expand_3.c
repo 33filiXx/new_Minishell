@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:15:44 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/13 00:50:23 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 05:30:52 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	handle_exit_status(t_expand_var *expand, char **p)
 	{
 		(*p) += 2;
 		expand->lenght += 2;
-		expand->result = strjoin_free_both(expand->result, ft_itoa((*exit_stat())));
+		expand->result
+			= strjoin_free_both(expand->result, ft_itoa((*exit_stat())));
 	}
 }
 
@@ -49,7 +50,7 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 {
 	int		stop;
 	char	one[2];
-	
+
 	stop = 0;
 	store_int_logic_var(expand, lexer, &stop);
 	while (**p)
@@ -59,9 +60,11 @@ void	expand_logic_handler(t_expand_var *expand, t_lexer **lexer, char **p,
 			handle_exit_status(expand, p);
 			if (check_edge_one(expand, stop, p))
 				break ;
+			expand->edge = 0;
 			expand->newstr = cleanup_argv(p, lexer, expand);
 			if (expand->edge == 1)
-				expand->result = strjoin_free_both(expand->result, expand->newstr);
+				expand->result
+					= strjoin_free_both(expand->result, expand->newstr);
 			if (**p == '$')
 				store_equal_env(expand, p, lexer, env);
 		}

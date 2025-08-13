@@ -43,7 +43,8 @@ char	*my_strnstr(const char *haystack, const char *needle, size_t len)
 	while (haystack[i] && i < len)
 	{
 		j = 0;
-		while (haystack[j + i] == needle[j] && needle[j] && i + j < len && haystack[(j + i) - 1] != '=')
+		while (haystack[j + i] == needle[j] && needle[j] && i + j < len
+			&& haystack[(j + i) - 1] != '=')
 		{
 			j++;
 		}

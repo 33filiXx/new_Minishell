@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:58:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/13 01:35:37 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 04:09:36 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	r_and_check_double(t_lexer *lexer, t_store_in_q_var *var, char **str,
 		update_edge_inside(str);
 	}
 }
+
 int	count_single_length(char **str)
 {
 	int	counter;
@@ -56,6 +57,7 @@ int	count_single_length(char **str)
 		(*str)--;
 	return (counter);
 }
+
 int	free_and_store_in_q(char *str, t_lexer *lexer)
 {
 	free(lexer->q);

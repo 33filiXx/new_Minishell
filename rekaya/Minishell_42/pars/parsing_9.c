@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_9.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 19:02:39 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:04:08 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 04:59:57 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ int	syntax_error_i_h(t_lexer *lexer)
 		return (1);
 	}
 	else if (redirect == 4)
-	{
-		write(2, "minishell: syntax error near unexpected token `<'\n", 51);
-		return (1);
-	}
+		return (write(2, "minishell: \
+				syntax error near unexpected token `<'\n", 51), 1);
 	return (0);
 }
 
@@ -111,8 +109,5 @@ int	lexer(char *argv, t_lexer **lexer)
 		return (1);
 	if (!lexer)
 		return (0);
-	// 	check_herdoc((*lexer)->next);
-	// 	check_append((*lexer)->next);
-	// 	check_pipe((*lexer)->next);
 	return (0);
 }

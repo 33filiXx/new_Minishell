@@ -54,7 +54,7 @@ void	execute_child_process(t_command *cmd, char **env)
 		{
 			if (cmd->redirs->type != 4)
 				exit(1);
-			else 
+			else
 				exit(130);
 		}
 	}

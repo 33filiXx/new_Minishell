@@ -38,8 +38,7 @@ void	check_file_access(t_command *cmd)
 		print_command_error(cmd->argv[0], ": No such file or directory\n");
 		exit(127);
 	}
-	if (stat(cmd->path, &file_stat) == 0
-		&& S_ISDIR(file_stat.st_mode))
+	if (stat(cmd->path, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))
 	{
 		print_command_error(cmd->argv[0], ": Is a directory\n");
 		exit(126);

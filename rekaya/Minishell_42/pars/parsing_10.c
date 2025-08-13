@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   parsing_10.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/01 07:42:53 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/13 04:50:00 by wel-mjiy         ###   ########.fr       */
+/*   Created: 2025/08/13 05:00:31 by wel-mjiy          #+#    #+#             */
+/*   Updated: 2025/08/13 05:00:47 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../nrc/minishell.h"
 
-void	reset_rebuild_var(t_rebuild_var *rebuild, char *lexer, char *env)
+void	store_three_ho(char *str, int *checker_quotes, int *stalker)
 {
-	rebuild->check = 0;
-	rebuild->j = 0;
-	rebuild->p = 0;
-	rebuild->lenght_one = ft_strlen(lexer);
-	rebuild->lenght_two = ft_strlen(env);
-}
-
-int	open_random_fd(void)
-{
-	return (open("/dev/random", O_RDONLY));
+	while (str[*stalker] && str[*stalker] != ' ' && str[*stalker] != '\t')
+	{
+		if (str[*stalker] == '\'' || str[*stalker] == '"')
+		{
+			*checker_quotes = 1;
+			break ;
+		}
+		(*stalker)++;
+	}
 }

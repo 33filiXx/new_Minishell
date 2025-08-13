@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   expand_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/01 07:42:53 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/13 04:50:00 by wel-mjiy         ###   ########.fr       */
+/*   Created: 2025/08/13 04:58:08 by wel-mjiy          #+#    #+#             */
+/*   Updated: 2025/08/13 04:58:22 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../nrc/minishell.h"
 
-void	reset_rebuild_var(t_rebuild_var *rebuild, char *lexer, char *env)
+void	expand(t_env *env, t_lexer *lexer)
 {
-	rebuild->check = 0;
-	rebuild->j = 0;
-	rebuild->p = 0;
-	rebuild->lenght_one = ft_strlen(lexer);
-	rebuild->lenght_two = ft_strlen(env);
-}
-
-int	open_random_fd(void)
-{
-	return (open("/dev/random", O_RDONLY));
+	while (lexer)
+	{
+		if (lexer->token != 2)
+			search_comapre(env, &lexer);
+		else
+			lexer = lexer->next;
+		lexer = lexer->next;
+	}
 }

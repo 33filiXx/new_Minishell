@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 20:25:24 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/07/08 20:36:05 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:09:15 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	{
 		i++;
 	}
-	return i;
+	return (i);
 }

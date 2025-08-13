@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_7.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 19:02:39 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:03:35 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 04:17:16 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	store_three_ht(char *str, int *i, t_lexer **lexer)
 	tmp[j] = '\0';
 	insert_at_end(lexer, tmp, WORD, 1);
 	free(tmp);
-	// tmp = NULL;
 	get_last_normal(*lexer, str + s);
 }
 
@@ -93,6 +92,7 @@ int	edge_case_a(t_lexer *lexer)
 	}
 	return (1);
 }
+
 int	redirection_counter(char *str)
 {
 	int	i;

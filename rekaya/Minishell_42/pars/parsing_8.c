@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_8.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 19:02:39 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:03:52 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 05:03:05 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	syntax_error_o_a(t_lexer *lexer)
 
 	redirect = check_redirection_a(lexer);
 	flage = check_if_nofile_a(lexer);
-	// printf("%d\n", edge_case_a(lexer));
 	if (edge_case_a(lexer) == 1 && flage != 0 && redirect >= 2)
 	{
 		write(2, "minishell: syntax error near unexpected token `>'\n", 51);
@@ -72,10 +71,8 @@ int	syntax_error_o_a(t_lexer *lexer)
 		return (1);
 	}
 	else if (redirect > 2)
-	{
-		write(2, "minishell: syntax error near unexpected token `>'\n", 51);
-		return (1);
-	}
+		return (write(2, "minishell: \
+			syntax error near unexpected token `>'\n", 51), 1);
 	return (0);
 }
 

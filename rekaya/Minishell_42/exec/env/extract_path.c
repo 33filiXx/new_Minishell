@@ -24,7 +24,7 @@ void	get_command_path(char **cmd, char **envp, t_command **command_list)
 		(*command_list)->path = extract_path(cmd[0], envp, command_list);
 }
 
-static	char	*join_path(char *path, char *cmd)
+static char	*join_path(char *path, char *cmd)
 {
 	char	*tmp;
 	char	*fullpath;

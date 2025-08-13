@@ -6,14 +6,14 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:17:05 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/13 00:43:07 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:10:15 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../nrc/minishell.h"
 
 void	handle_double_single(t_env *env, t_lexer **lexer, t_expand_var *expand,
-			char **p)
+		char **p)
 {
 	if ((*lexer)->q[expand->i] == 0)
 	{
@@ -58,7 +58,6 @@ void	free_position(t_expand_norm *norm)
 void	store_into_next(t_lexer **lexer, t_lexer *to_delete)
 {
 	(*lexer)->quotes = to_delete->quotes;
-	// Free old content to prevent leak before overwriting
 	if ((*lexer)->content)
 		free((*lexer)->content);
 	(*lexer)->content = to_delete->content;

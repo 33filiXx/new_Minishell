@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/13 01:48:11 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 04:08:49 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ void	check_quotes_state(char str, t_store_helper *store)
 			|| str == '"'))
 		store->last_quotes = 1;
 }
+
 int	quotes_strlen(char *s)
 {
-	int			i;
-	int			res;
+	int				i;
+	int				res;
 	t_store_helper	state;
 
 	i = 0;
@@ -58,23 +59,21 @@ int	quotes_strlen(char *s)
 	while (s[i])
 	{
 		check_quotes_state(s[i], &state);
-		// stop at delimiters only when NOT inside quotes
-		if (state.state_double == 0 && state.state_single == 0 &&
-			(s[i] == ' ' || s[i] == '\t' || s[i] == '|' || s[i] == '>' || s[i] == '<'))
-			break;
+		if (state.state_double == 0 && state.state_single == 0 && (s[i] == ' '
+				|| s[i] == '\t' || s[i] == '|' || s[i] == '>' || s[i] == '<'))
+			break ;
 		res += 1;
 		i++;
 	}
 	return (res);
 }
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
 
 	i = 0;
 	while (s1 && s2 && s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
-	{
 		i++;
-	}
 	return (s1[i] - s2[i]);
 }

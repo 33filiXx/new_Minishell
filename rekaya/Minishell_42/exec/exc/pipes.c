@@ -39,7 +39,7 @@ void	close_all_pipes(int **pipes, int count)
 }
 
 void	cleanup_pipeline(int **pipes, int pipes_allocated, pid_t *pids,
-			char **envp)
+		char **envp)
 {
 	int	i;
 

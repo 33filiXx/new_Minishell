@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:58:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:00:31 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 04:09:26 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int	count_double_lenght(char *str)
 		lenght++;
 		i++;
 	}
-	// if (lenght == 2)
-	// 	lenght--;
 	return (lenght);
 }
 
@@ -66,10 +64,6 @@ int	count_egde_lenght(char *str)
 		if (str[i] == '"' || str[i] == '\'')
 			break ;
 	}
-	// if (lenght == 2)
-	// 	lenght--;
-	// printf("%d" , lenght);
-	// exit(1);
 	return (lenght);
 }
 
@@ -84,6 +78,7 @@ void	update_str_to_double(char **str)
 		(*str)++;
 	}
 }
+
 void	update_edge_inside(char **str)
 {
 	if (**str == '\"' || **str == '\'')

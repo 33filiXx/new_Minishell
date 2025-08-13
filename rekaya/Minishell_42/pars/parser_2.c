@@ -20,7 +20,7 @@ void	change_pipe_value(t_command *command, int *check_out)
 }
 
 void	store_word_in_command(t_lexer **lexer, int *i, t_command *command,
-			char **envp)
+		char **envp)
 {
 	while (*lexer && (*lexer)->token == WORD)
 	{

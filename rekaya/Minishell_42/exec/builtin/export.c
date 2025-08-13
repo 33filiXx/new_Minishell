@@ -103,8 +103,8 @@ static int	handle_regular_assignment(t_env **env, char *arg, int *ret)
 
 int	export_builtin(t_env **env, char **args)
 {
-	int		i;
-	int		ret;
+	int	i;
+	int	ret;
 
 	i = 1;
 	ret = 0;
@@ -117,7 +117,8 @@ int	export_builtin(t_env **env, char **args)
 	{
 		if (my_strnstr(args[i], "+=", ft_strlen(args[i])))
 		{
-			handle_plus_assignment(env, args[i], &ret);}
+			handle_plus_assignment(env, args[i], &ret);
+		}
 		else
 			handle_regular_assignment(env, args[i], &ret);
 		i++;

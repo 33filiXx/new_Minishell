@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:58:56 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 23:41:17 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 05:23:49 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 char	*strjoin_free_both(char *s1, char *s2)
 {
-    char	*joined;
+	char	*joined;
 
-    if (!s1 && !s2)
-        return (NULL);
-    if (!s1)
-    {
-        joined = ft_strdup(s2);
-        free(s2);
-        return (joined);
-    }
-    if (!s2)
-    {
-        return (s1);
-    }
-    joined = ft_strjoin(s1, s2);
-    free(s1);
-    free(s2);
-    return (joined);
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+	{
+		joined = ft_strdup(s2);
+		free(s2);
+		return (joined);
+	}
+	if (!s2)
+	{
+		return (s1);
+	}
+	joined = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (joined);
 }
 
 void	reset_info_expand(t_expand_var *expand)

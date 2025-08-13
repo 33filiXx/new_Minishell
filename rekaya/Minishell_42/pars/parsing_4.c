@@ -31,7 +31,8 @@ int	handle_quotes_single(t_lexer *lexer, char **str, t_store_helper *store,
 	return (0);
 }
 
-int	recall(t_store_helper *store, char *str ,t_store_in_q_var *var , t_lexer *lexer)
+int	recall(t_store_helper *store, char *str, t_store_in_q_var *var,
+		t_lexer *lexer)
 {
 	reset_q_var(var);
 	reset_data(store);
@@ -47,7 +48,7 @@ void	store_in_q(char *str, t_lexer *lexer)
 	char				*tmp;
 
 	tmp = str;
-	recall(&store , str , &var , lexer);
+	recall(&store, str, &var, lexer);
 	store_in_lexer_single(tmp, store, lexer, &var);
 	reset_data(&store);
 	while (*str)

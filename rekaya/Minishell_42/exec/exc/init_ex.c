@@ -14,13 +14,10 @@
 
 int	is_builtin_command(char *cmd_name)
 {
-	if (ft_strcmp(cmd_name, "cd") == 0
-		|| ft_strcmp(cmd_name, "pwd") == 0
-		|| ft_strcmp(cmd_name, "echo") == 0
-		|| ft_strcmp(cmd_name, "export") == 0
-		|| ft_strcmp(cmd_name, "unset") == 0
-		|| ft_strcmp(cmd_name, "exit") == 0
-		|| ft_strcmp(cmd_name, "env") == 0)
+	if (ft_strcmp(cmd_name, "cd") == 0 || ft_strcmp(cmd_name, "pwd") == 0
+		|| ft_strcmp(cmd_name, "echo") == 0 || ft_strcmp(cmd_name,
+			"export") == 0 || ft_strcmp(cmd_name, "unset") == 0
+		|| ft_strcmp(cmd_name, "exit") == 0 || ft_strcmp(cmd_name, "env") == 0)
 		return (1);
 	return (0);
 }
@@ -36,8 +33,8 @@ int	handle_initial_checks(t_command *cmd)
 	return (-1);
 }
 
-int	handle_builtin_execution(t_command *cmd, t_env **env,
-	int *save_stdin, int *save_stdout)
+int	handle_builtin_execution(t_command *cmd, t_env **env, int *save_stdin,
+		int *save_stdout)
 {
 	int	ret;
 

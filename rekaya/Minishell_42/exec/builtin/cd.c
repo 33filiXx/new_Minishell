@@ -29,15 +29,13 @@ static void	handle_getcwd_error(void)
 
 static int	handle_cd_args(char **args)
 {
-	int count;
+	int	count;
 
 	if (!args || !*args)
 		return (0);
-	
 	count = 0;
 	while (args[count])
 		count++;
-	
 	if (count > 2)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);

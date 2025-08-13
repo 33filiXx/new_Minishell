@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:14:22 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/13 02:35:00 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 03:11:10 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	check_edge_cases(char **newstr, char **str, t_expand_var *expand,
 	if (!tmp)
 		return (0);
 	store_int_logic_var(expand, lexer, &stop);
-	if (**str == '$' && *(*str + 1) && ft_isalpha(*(*str + 1)) != 1
-		&& *(*str + 1) != '?')
+	if (**str == '$' && *(*str + 1) && ft_isalpha(*(*str + 1)) != 1 && *(*str
+			+ 1) != '?')
 	{
-		while (*str && ft_isalpha((*(*str))) != 1
-			&& **str == '$' && *(*str + 1) != '?')
+		while (*str && ft_isalpha((*(*str))) != 1 && **str == '$' && *(*str
+				+ 1) != '?')
 		{
 			if (check_edge_cases_helper(str, expand, tmp, &i))
 				break ;
@@ -71,9 +71,10 @@ char	*cleanup_argv(char **str, t_lexer **lexer, t_expand_var *expand)
 }
 
 void	store_equal_env_helper(t_expand_var *expand, char *to_cmp,
-							t_env *tmp_env)
+		t_env *tmp_env)
 {
-	char *tmp;
+	char	*tmp;
+
 	while (tmp_env)
 	{
 		if (tmp_env->value && ft_strcmp(to_cmp + 1, tmp_env->key) == 0)
@@ -81,8 +82,6 @@ void	store_equal_env_helper(t_expand_var *expand, char *to_cmp,
 			tmp = expand->result;
 			expand->result = ft_strjoin(tmp, tmp_env->value);
 			free(tmp);
-			// free(to_cmp);
-			// to_cmp = NULL;
 			break ;
 		}
 		tmp_env = tmp_env->next;
@@ -90,7 +89,7 @@ void	store_equal_env_helper(t_expand_var *expand, char *to_cmp,
 }
 
 void	store_equal_env(t_expand_var *expand, char **str, t_lexer **lexer,
-			t_env *env)
+		t_env *env)
 {
 	t_env	*tmp_env;
 	char	*to_cmp;
