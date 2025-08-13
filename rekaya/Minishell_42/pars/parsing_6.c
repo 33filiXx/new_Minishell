@@ -3,20 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_6.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 19:02:39 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:03:17 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:28:21 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../nrc/minishell.h"
 
-void	build_with_quotes(t_store_helper *store, char *str, int *p, char *tmp)
+char	*build_with_quotes(t_store_helper *store, char *str, int *p)
 {
 	int	j;
+	char	*tmp = NULL;
 
 	j = 0;
+	tmp = malloc(sizeof(char) * (quotes_strlen(str + *p) + 1));
+	if (!tmp)
+		return (NULL);
 	while (str[*p])
 	{
 		if (store->state_double == 0 && store->state_single == 0)
@@ -39,27 +43,25 @@ void	build_with_quotes(t_store_helper *store, char *str, int *p, char *tmp)
 		tmp[j++] = str[(*p)++];
 	}
 	tmp[j] = '\0';
+	return (tmp);
 }
 
 void	store_with_quotes(t_lexer **lexer, char *str, int *i,
 		int *checker_quotes)
 {
-	int				p;
-	char			*tmp;
+	int			p;
+	char			*tmp = NULL;
 	t_store_helper	store;
-	int				len;
 
 	p = *i;
-	len = quotes_strlen(str + *i) + 1;
-	tmp = malloc(sizeof(char) * (len));
+	reset_data(&store);
+	tmp = build_with_quotes(&store, str, &p);
 	if (!tmp)
 		return ;
-	reset_data(&store);
-	build_with_quotes(&store, str, &p, tmp);
 	last_store(lexer, str, tmp, i);
+	free(tmp);
 	*i = p;
 	*checker_quotes = 0;
-	free(tmp);
 }
 
 void	store_one(char *str, t_lexer **lexer, int *i)

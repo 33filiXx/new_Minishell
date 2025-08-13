@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:15:44 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 23:26:35 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 00:50:23 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_edge_one(t_expand_var *expand, int stop, char **p)
 {
-	if (**p == '$' && expand->lenght == stop)
+	if (**p == '$' && expand->lenght == stop - 1)
 	{
 		expand->result = ft_strjoin(expand->result, "$");
 		(*p)++;
@@ -29,7 +29,7 @@ void	handle_exit_status(t_expand_var *expand, char **p)
 	{
 		(*p) += 2;
 		expand->lenght += 2;
-		expand->result = ft_strjoin(expand->result, ft_itoa((*exit_stat())));
+		expand->result = strjoin_free_both(expand->result, ft_itoa((*exit_stat())));
 	}
 }
 

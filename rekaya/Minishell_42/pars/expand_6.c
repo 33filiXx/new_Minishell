@@ -18,6 +18,11 @@ void	search_helper(t_expand_var *expand, t_lexer **lexer, t_lexer *to_delete,
 	(*lexer)->next = to_delete->next;
 	free(to_delete);
 	*p = (*lexer)->content;
+	if (expand->finale_r)
+	{
+		free(expand->finale_r);
+		expand->finale_r = NULL;
+	}
 	reset_info_expand(expand);
 }
 

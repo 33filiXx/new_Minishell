@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:47 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 19:06:40 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:48:11 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	check_quotes_state(char str, t_store_helper *store)
 }
 int	quotes_strlen(char *s)
 {
-	int				i;
-	int				res;
+	int			i;
+	int			res;
 	t_store_helper	state;
 
 	i = 0;
@@ -58,9 +58,10 @@ int	quotes_strlen(char *s)
 	while (s[i])
 	{
 		check_quotes_state(s[i], &state);
-		if (state.state_double == 0 && state.state_double == 0 && (s[i] == ' '
-				|| s[i] == '\t' || !s[i]))
-			break ;
+		// stop at delimiters only when NOT inside quotes
+		if (state.state_double == 0 && state.state_single == 0 &&
+			(s[i] == ' ' || s[i] == '\t' || s[i] == '|' || s[i] == '>' || s[i] == '<'))
+			break;
 		res += 1;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:14:22 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 23:29:43 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 02:35:00 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,12 @@ void	store_equal_env_helper(t_expand_var *expand, char *to_cmp,
 			tmp = expand->result;
 			expand->result = ft_strjoin(tmp, tmp_env->value);
 			free(tmp);
-			free(to_cmp);
-			to_cmp = NULL;
+			// free(to_cmp);
+			// to_cmp = NULL;
 			break ;
 		}
 		tmp_env = tmp_env->next;
 	}
-	free(to_cmp);
 }
 
 void	store_equal_env(t_expand_var *expand, char **str, t_lexer **lexer,
@@ -114,6 +113,7 @@ void	store_equal_env(t_expand_var *expand, char **str, t_lexer **lexer,
 				break ;
 		}
 		to_cmp[i] = '\0';
+		store_equal_env_helper(expand, to_cmp, tmp_env);
 	}
-	store_equal_env_helper(expand, to_cmp, tmp_env);
+	free(to_cmp);
 }

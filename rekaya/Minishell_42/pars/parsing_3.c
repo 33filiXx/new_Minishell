@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:58:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 21:22:12 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:35:37 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	store_in_lexer_single(char *tmp, t_store_helper store, t_lexer *lexer,
 			lexer->lenght_single[var->p++] = count_single_length(&tmp);
 			if (!*tmp)
 				break ;
+			check_quotes_state(*tmp, &store);
 		}
 		tmp++;
 	}

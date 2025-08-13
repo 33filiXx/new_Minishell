@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_h.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:12:33 by wel-mjiy          #+#    #+#             */
-/*   Updated: 2025/08/12 17:41:27 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:31:28 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	init_lexer_fields(t_lexer *new_node, e_tokens token,
 {
 	new_node->token = token;
 	new_node->quotes = quotes;
-	new_node->q[0] = 1;
+	new_node->q[0] = 0;
 	new_node->lenght_q = 0;
 	new_node->lenght_double[0] = 0;
 	new_node->lenght_single[0] = 0;
@@ -58,7 +58,9 @@ void	insert_at_end(t_lexer **head, char *content, e_tokens token,
 	t_lexer	*new_node;
 	t_lexer	*temp;
 
+	// char *tmp = content;
 	new_node = creat_node(content, token, quotes);
+	// free(tmp);
 	if (*head == NULL)
 	{
 		*head = new_node;

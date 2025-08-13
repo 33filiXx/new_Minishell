@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:58:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:00:03 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 00:33:30 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_free(char **ptr)
 void	check_helper_one(t_lexer *lexer)
 {
 	printf("bash: syntax error near unexpected token `newline'\n");
-	ft_free_nodes(lexer);
+	free_one_lexer(lexer);
 	exit(1);
 }
 

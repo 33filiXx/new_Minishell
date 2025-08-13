@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_5.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykhoussi <ykhoussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 18:58:54 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 19:01:51 by ykhoussi         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:38:17 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	size_normal_length(const char *s)
 	if (!s)
 		return (0);
 	i = 0;
-	while (s[i] && s[i] != ' ' && s[i] != '\t')
+	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i])
 		i++;
 	return (i);
 }

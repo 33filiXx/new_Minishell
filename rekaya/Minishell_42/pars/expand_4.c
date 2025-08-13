@@ -6,7 +6,7 @@
 /*   By: wel-mjiy <wel-mjiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 17:17:05 by ykhoussi          #+#    #+#             */
-/*   Updated: 2025/08/12 23:08:20 by wel-mjiy         ###   ########.fr       */
+/*   Updated: 2025/08/13 00:43:07 by wel-mjiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,16 @@ void	free_position(t_expand_norm *norm)
 void	store_into_next(t_lexer **lexer, t_lexer *to_delete)
 {
 	(*lexer)->quotes = to_delete->quotes;
+	// Free old content to prevent leak before overwriting
+	if ((*lexer)->content)
+		free((*lexer)->content);
 	(*lexer)->content = to_delete->content;
 	(*lexer)->just_one_case = 1;
 	(*lexer)->q = to_delete->q;
 	(*lexer)->lenght_q = to_delete->lenght_q;
 	(*lexer)->lenght_double = to_delete->lenght_double;
+	(*lexer)->lenght_single = to_delete->lenght_single;
+	(*lexer)->lenght_edge = to_delete->lenght_edge;
 }
 
 void	store_into_postion(t_expand_norm *norm, t_lexer **lexer)

@@ -34,7 +34,7 @@ clean:
 fclean: clean
 	$(MAKE) fclean -C ft_libft/ 
 	rm -f $(NAME)
-debug : re
+debug : all
 	valgrind --leak-check=full  --leak-resolution=high ./minishell
 re: fclean all 
 
